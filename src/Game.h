@@ -18,7 +18,7 @@ private:
 	static void ShowMenu();
 
 	enum GameState { Uninitialized, ShowingSplash, Paused,
-					ShowingMenu, Playing, Exiting };
+					ShowingMenu, Playing_maze, Exiting };
 
 	static GameState _gameState;
 	static sf::RenderWindow _mainWindow;

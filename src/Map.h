@@ -3,7 +3,7 @@
 
 #endif // MAP_H
 
-#include "Tile.h"
+#include "Tile_Walkable.h"
 #include <fstream>
 #include <string>
 #include "LibTools.h"
@@ -18,18 +18,17 @@ class Map{
 
     public:
     Tile* tileset[MAXIMUM_MAP_HEIGHT][MAXIMUM_MAP_WIDTH];
+    enum mapType {Maze_map, WordSearch_map, Memory_map};
 
     Map();
-    Map(const char *fileName, std::string map_name);
+    Map(const char *fileName, mapType type);
 
     unsigned int getWidth() const{return width;}
     unsigned int getHeight() const{return height;}
-    std::string getName() const {return name;}
     Tile* getTile(int xPos, int yPos){return tileset[xPos][yPos];}
 
     private:
         unsigned int width;
         unsigned int height;
-        std::string name;
 };
 

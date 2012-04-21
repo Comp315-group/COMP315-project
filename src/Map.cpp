@@ -3,19 +3,15 @@
 Map::Map()
 {
     width = height = MAXIMUM_MAP_HEIGHT;
-    name = "noname";
     sf::Image pic = load_image("resource/img/tile0.bmp");
 
     for (unsigned int y = 0; y < height ; y++)
         for (unsigned int x = 0; x < width ; x++)
-            tileset[x][y] = new Tile(pic, WALKABILITY_NOT_OK, x, y, "unnamed");
+            tileset[x][y] = new Tile(pic, x, y);
 }
 
-Map::Map(const char *fileName, std::string map_name)
+Map::Map(const char *fileName, mapType type)
 {
-
-    name = map_name;
-
     width = height = 0;
     ifstream inStream(fileName);
 
@@ -30,51 +26,54 @@ Map::Map(const char *fileName, std::string map_name)
     getline(inStream, height_s);
     height = atoi(height_s.c_str());
 
-    sf::Image emptyTile = load_image("resource/img/empty.bmp");
-    sf::Image wallTile = load_image("resource/img/wall_stone.png");
-    sf::Image floorTile = load_image("resource/img/floor.bmp");
-    sf::Image trollTile = load_image("resource/img/troll face.bmp");
-    sf::Image closedDoorTile = load_image("resource/img/wooden_door_closed.png");
-    sf::Image openDoorTile = load_image("resource/img/wooder_door_open.png");
+    char mapRepresentation[width][height];
 
     for (unsigned int y = 0; y < height ; y++)
     {
+        std::string line = "";
+        getline(inStream, line);    //get next line from map file
 
-            std::string line = "";
-            getline(inStream, line);
-/*
-            for (unsigned int x = 0; x < line.length(); x++)
-            {
+        for (int x = 0; x < line.length(); x++)
+        {
+            mapRepresentation[x][y] = line[x];
+        }
 
-                switch (line[x])
-                {
-                    case '9':
-                    tileset[x][y] = new Tile(emptyTile, WALKABILITY_NOT_OK, x*TILE_WIDTH, y*TILE_HEIGHT, "EMPTY");
-                    break;
-
-                    case '1':
-                    tileset[x][y] = new Tile(wallTile, WALKABILITY_NOT_OK, x*TILE_WIDTH, y*TILE_HEIGHT, "WALL");
-                    break;
-
-                    case '0':
-                    tileset[x][y] = new Tile(floorTile, WALKABILITY_OK, x*TILE_WIDTH, y*TILE_HEIGHT, "FLOOR");
-                    break;
-
-                    case 'T':
-                    tileset[x][y] = new Tile(trollTile, WALKABILITY_OK, x*TILE_WIDTH, y*TILE_HEIGHT, "TROLL");
-                    break;
-
-                    case 'C':
-                    exitTile = new Tile(closedDoorTile, WALKABILITY_NOT_OK, x*TILE_WIDTH, y*TILE_HEIGHT, "CLOSED_DOOR");
-                    tileset[x][y] = exitTile;
-                    break;
-
-
-                }
-                tileset[x][y]->loadSprite();
-            }*/
     } //Done loading tiles
 
+
+    switch(type)
+    {
+        case Maze_map:
+        sf::Image floorTileImg = load_image("resource/img/floor.bmp");
+        sf::Image emptyImg = load_image("resource/img/empty.bmp");
+        sf::Image wallTileImg = load_image("resource/img/wall_stone.png");
+        sf::Image doorImg = load_image("resource/img/wooden_door_closed.png");
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
+                {
+                    switch (mapRepresentation[x][y])
+                    {
+                        case '9':
+                            tileset[x][y] = new WalkableTile(emptyImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_NOT_OK);
+                        break;
+
+                        case '1':
+                            tileset[x][y] = new WalkableTile(wallTileImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_NOT_OK);
+                        break;
+
+                        case '0':
+                            tileset[x][y] = new WalkableTile(floorTileImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_OK);
+                        break;
+
+                        case 'C':
+                            tileset[x][y] = new WalkableTile(doorImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_EXITABLE);
+                        break;
+
+                    }
+                    tileset[x][y]->loadSprite(); //Create sprite from the associated image
+                }
+            break;
+    }
 
     inStream.close();
 }

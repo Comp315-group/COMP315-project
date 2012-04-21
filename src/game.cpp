@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "MainMenu.h"
 #include "SplashScreen.h"
+#include "MazeGame.h"
 
 // A quirk of C++, static member variables need to be instantiated outside of the class
 Game::GameState Game::_gameState = Uninitialized;
@@ -12,6 +13,7 @@ void Game::Start(void)
 		return;
 
 	_mainWindow.Create(sf::VideoMode(1024,768,32),"COMP315project");
+	_mainWindow.SetFramerateLimit(30);  //Game runs at 30FPS maximum
 
 	_gameState= Game::ShowingSplash;
 
@@ -45,13 +47,17 @@ void Game::GameLoop()
 				ShowSplashScreen();
 				break;
 			}
-		case Game::Playing:
+		case Game::Playing_maze:
 			{
 				sf::Event currentEvent;
+				MazeGame mazegame;
+
 				while(_mainWindow.GetEvent(currentEvent))
 					{
 					_mainWindow.Clear(sf::Color(0,0,0));
-					_mainWindow.Display();
+
+                    mazegame.draw(_mainWindow);
+                    _mainWindow.Display();
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -82,7 +88,7 @@ void Game::ShowMenu()
 			_gameState = Game::Exiting;
 			break;
 		case MainMenu::Play:
-			_gameState = Game::Playing;
+			_gameState = Game::Playing_maze;
 			break;
 	}
 }

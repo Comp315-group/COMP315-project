@@ -18,9 +18,3 @@ void Tile::loadSprite()
     sprite.SetX(getX());
     sprite.SetY(getY());
 }
-
-//set the walkability of this tile
-void Tile::setWalkability(int newWalkability)
-{
-    walkability = newWalkability;
-}
