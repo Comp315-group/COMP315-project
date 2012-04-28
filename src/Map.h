@@ -26,6 +26,7 @@ class Map{
     unsigned int getWidth() const{return width;}
     unsigned int getHeight() const{return height;}
     Tile* getTile(int xPos, int yPos){return tileset[xPos][yPos];}
+    ~Map();
 
     private:
         unsigned int width;

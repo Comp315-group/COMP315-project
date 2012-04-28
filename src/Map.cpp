@@ -7,7 +7,7 @@ Map::Map()
 
     for (unsigned int y = 0; y < height ; y++)
         for (unsigned int x = 0; x < width ; x++)
-            tileset[x][y] = new Tile(pic, x, y);
+            tileset[x][y] = new Tile(pic, x, y, TILE_DEFAULT_WIDTH, TILE_DEFAULT_HEIGHT);
 }
 
 Map::Map(const char *fileName, mapType type)
@@ -54,26 +54,30 @@ Map::Map(const char *fileName, mapType type)
                     switch (mapRepresentation[x][y])
                     {
                         case '9':
-                            tileset[x][y] = new WalkableTile(emptyImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_NOT_OK);
+                            tileset[x][y] = new WalkableTile(emptyImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
                         break;
 
                         case '1':
-                            tileset[x][y] = new WalkableTile(wallTileImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_NOT_OK);
+                            tileset[x][y] = new WalkableTile(wallTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
                         break;
 
                         case '0':
-                            tileset[x][y] = new WalkableTile(floorTileImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_OK);
+                            tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
                         break;
 
                         case 'C':
-                            tileset[x][y] = new WalkableTile(doorImg, x*TILE_WIDTH, y*TILE_HEIGHT, WALKABILITY_EXITABLE);
+                            tileset[x][y] = new WalkableTile(doorImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_EXITABLE);
                         break;
-
                     }
-                    tileset[x][y]->loadSprite(); //Create sprite from the associated image
+                    //tileset[x][y]->loadSprite(); //Create sprite from the associated image
                 }
             break;
     }
 
     inStream.close();
+}
+
+Map::~Map()
+{
+    delete [] tileset;
 }
