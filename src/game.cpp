@@ -179,7 +179,7 @@ void Game::GameLoop()
 			{
 
             sf::Event currentEvent;
-            if (matchinggame = NULL)
+            if (matchinggame == NULL)
                 matchinggame = new MatchingGame();
            while(_mainWindow.GetEvent(currentEvent))
 					{
