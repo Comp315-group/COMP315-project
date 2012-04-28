@@ -179,7 +179,7 @@ void Game::GameLoop()
 			{
 
             sf::Event currentEvent;
-            if (matchinggame = NULL)
+            if (matchinggame == NULL)
                 matchinggame = new MatchingGame();
            while(_mainWindow.GetEvent(currentEvent))
 					{
@@ -280,7 +280,7 @@ void Game::ShowMenu()
 			_gameState = Game::Exiting;
 			break;
 		case MainMenu::Play:
-			_gameState = Game::Playing_matching;
+			_gameState = Game::Playing_maze;
 			break;
 	}
 }
