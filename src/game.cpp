@@ -11,7 +11,7 @@ void Game::Start(void)
 	if(_gameState != Uninitialized)
 		return;
 
-	_mainWindow.Create(sf::VideoMode(1024,768,32),"COMP315project");
+	_mainWindow.Create(sf::VideoMode(1024,768,32),"COMP315project",sf::Style::Close);
 	//_mainWindow.SetFramerateLimit(60);  //Game runs at 30FPS maximum
 	oddonegame = new OddOneGame();
 	mazegame = new MazeGame();
