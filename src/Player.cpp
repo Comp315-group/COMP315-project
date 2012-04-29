@@ -2,9 +2,9 @@
 
 Player::Player(string name_, sf::Image image_){
     name = name_;
-    score = 10;
-    xPos = 9*32;
-    yPos = 11*32;
+    score = 0;
+    xPos = 0;
+    yPos = 0;
     image = image_;
     sprite.SetImage(image);
     sprite.SetX(xPos);
@@ -25,6 +25,9 @@ void Player::resetScore(){
 
 void Player::incrementScore(int value){
     score+=value;
+
+    if (score < 0)
+        resetScore();
 }
 
 int Player::getXPos(){

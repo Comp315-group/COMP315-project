@@ -26,10 +26,13 @@ class Map{
     unsigned int getWidth() const{return width;}
     unsigned int getHeight() const{return height;}
     Tile* getTile(int xPos, int yPos){return tileset[xPos][yPos];}
+    Tile* getStartTile();
     ~Map();
 
     private:
         unsigned int width;
         unsigned int height;
+        //The tile that the player starts on for this map
+        Tile *startTile;
 };
 

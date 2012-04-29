@@ -11,20 +11,56 @@
 class MazeGame
 {
     bool mazeGameOver;
-    Map *map;
+    sf::String mazeText;
 
     public:
      MazeGame();
      void draw(sf::RenderWindow &gameWindow);
      void handle_input(Player *player, sf::Event input);
-
+     void setPlayerStartLocation(Player *player);
      bool gameOver();
+
+    Map *map;
+
 };
 
 MazeGame::MazeGame()
 {
     mazeGameOver = false;
-    map = new Map("resource/map/maze.map", Map::Maze_map);
+    srand(time(0));
+    int num = rand() % 3;   //choose random maze
+
+    switch (num)
+    {
+        case 0:
+            map = new Map("resource/map/maze1.map", Map::Maze_map);
+            break;
+
+        case 1:
+            map = new Map("resource/map/maze2.map", Map::Maze_map);
+            break;
+
+        case 2:
+            map = new Map("resource/map/maze3.map", Map::Maze_map);
+            break;
+
+        default:
+            map = new Map("resource/map/maze1.map", Map::Maze_map);
+            break;
+    }
+
+    mazeText.SetText("Escape the maze!");
+    mazeText.SetSize(80);
+    mazeText.SetColor(sf::Color ::Blue);
+    mazeText.SetPosition(175,25);
+}
+
+void MazeGame::setPlayerStartLocation(Player *player)
+{
+    int x = map->getStartTile()->getX();
+    int y = map->getStartTile()->getY();
+
+    player->move(x, y);
 }
 
 void MazeGame::draw(sf::RenderWindow &gameWindow)
@@ -39,6 +75,9 @@ void MazeGame::draw(sf::RenderWindow &gameWindow)
             gameWindow.Draw(currentTile->getSprite());
         }
     }
+
+    //draw Text
+    gameWindow.Draw(mazeText);
 
     //delete currentTile;
 

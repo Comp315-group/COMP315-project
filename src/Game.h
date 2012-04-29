@@ -9,6 +9,7 @@
 #include "HideGame.h"
 #include "MatchingGame.h"
 #include "PatternGame.h"
+#include "GameTimer.h"
 
 Player *player1;
 OddOneGame *oddonegame;
@@ -16,6 +17,9 @@ MazeGame *mazegame;
 HideGame *hidegame;
 MatchingGame *matchinggame;
 PatternGame *patterngame;
+
+sf::String score_text;
+
 
 
 class Game
@@ -34,7 +38,7 @@ private:
     enum GameState { Uninitialized, ShowingSplash, Paused,
 					ShowingMenu, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Exiting };
 
-    static void randomizeGameState();
+    static void randomizeGameState(GameState currentState);
 
 
 	static GameState _gameState;

@@ -11,17 +11,24 @@ void Game::Start(void)
 	if(_gameState != Uninitialized)
 		return;
 
-	_mainWindow.Create(sf::VideoMode(1024,768,32),"COMP315project",sf::Style::Close);
+	_mainWindow.Create(sf::VideoMode(1024,768,32),"COMP315project");
 	//_mainWindow.SetFramerateLimit(60);  //Game runs at 30FPS maximum
+
+    player1 = new Player("lunch", load_image("resource/img/player.bmp")); //create player object
+
 	oddonegame = new OddOneGame();
 	mazegame = new MazeGame();
+	mazegame->setPlayerStartLocation(player1);
 	hidegame = new HideGame();
 	matchinggame = new MatchingGame();
 	srand(time(0));
 
-	 player1 = new Player("lunch", load_image("resource/img/player.bmp")); //create player object
+    score_text.SetText("Score : " + toString(player1->getScore()));
+    score_text.SetSize(30);
+    score_text.SetColor(sf::Color ::Green);
+    score_text.SetPosition(0,0);
 
-	_gameState= Game::ShowingSplash;
+    _gameState= Game::ShowingSplash;
 
 	while(!IsExiting())
 	{
@@ -57,14 +64,22 @@ void Game::GameLoop()
 			{
 				sf::Event currentEvent;
                 if (mazegame == NULL)
+                {
                     mazegame = new MazeGame();
+                    mazegame->setPlayerStartLocation(player1);
+                }
 
-				while(_mainWindow.GetEvent(currentEvent))
+           		while(_mainWindow.GetEvent(currentEvent))
 					{
                         _mainWindow.Clear(sf::Color(0,0,0));
 
                         mazegame->draw(_mainWindow);
                         _mainWindow.Draw(player1->getSprite());
+
+                        //Update and draw player score to screen
+                        score_text.SetText("Score : " + toString(player1->getScore()));
+                        _mainWindow.Draw(score_text);
+
                         _mainWindow.Display();
 
                         if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
@@ -78,7 +93,8 @@ void Game::GameLoop()
 
                         if (mazegame->gameOver())
                         {
-                                randomizeGameState();   //move to next game
+                                player1->incrementScore(20);
+                                randomizeGameState(_gameState);   //move to next game
                                 mazegame = NULL;
                                 break;
                         }
@@ -96,6 +112,11 @@ void Game::GameLoop()
 					_mainWindow.Clear(sf::Color(0,0,0));
 
                     oddonegame->draw(_mainWindow);
+
+                    //Update and draw player score to screen
+                    score_text.SetText("Score : " + toString(player1->getScore()));
+                    _mainWindow.Draw(score_text);
+
                     _mainWindow.Display();
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
@@ -116,11 +137,14 @@ void Game::GameLoop()
 
                             if(oddonegame->gameOver())
                             {
-                                randomizeGameState();   //move to next game
-
+                                player1->incrementScore(10);
+                                randomizeGameState(_gameState);   //move to next game
                                 oddonegame = NULL;
                                 break;
                             }
+
+                            else
+                            player1->incrementScore(-5);
                         }
                     }
                 }
@@ -142,6 +166,10 @@ void Game::GameLoop()
 
                     hidegame->draw(_mainWindow);
 
+                    //Update and draw player score to screen
+                    score_text.SetText("Score : " + toString(player1->getScore()));
+                    _mainWindow.Draw(score_text);
+
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -161,11 +189,14 @@ void Game::GameLoop()
 
                            if (hidegame->gameOver())
                            {
-                               randomizeGameState();
-
+                               player1->incrementScore(20);
+                               randomizeGameState(_gameState);
                                hidegame = NULL;
                                break;
                            }
+
+                           else
+                            player1->incrementScore(-5);
 
                         }
 
@@ -181,12 +212,16 @@ void Game::GameLoop()
             sf::Event currentEvent;
             if (matchinggame == NULL)
                 matchinggame = new MatchingGame();
+
            while(_mainWindow.GetEvent(currentEvent))
 					{
 					_mainWindow.Clear(sf::Color(0,0,0));
 
                     matchinggame->draw(_mainWindow);
 
+                    //Update and draw player score to screen
+                    score_text.SetText("Score : " + toString(player1->getScore()));
+                    _mainWindow.Draw(score_text);
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -205,12 +240,15 @@ void Game::GameLoop()
                             matchinggame->drawText(_mainWindow);
 
                             if (matchinggame->gameOver())
-                           {
-                               randomizeGameState();
-
+                            {
+                               player1->incrementScore(20);
+                               randomizeGameState(_gameState);
                                matchinggame = NULL;
                                break;
-                           }
+                            }
+
+                           else
+                            player1->incrementScore(-5);
                         }
 
                     }
@@ -224,12 +262,16 @@ void Game::GameLoop()
             sf::Event currentEvent;
             if (patterngame == NULL)
                 patterngame = new PatternGame();
+
            while(_mainWindow.GetEvent(currentEvent))
 					{
 					_mainWindow.Clear(sf::Color(0,0,0));
 
                     patterngame->draw(_mainWindow);
 
+                    //Update and draw player score to screen
+                    score_text.SetText("Score : " + toString(player1->getScore()));
+                    _mainWindow.Draw(score_text);
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -246,13 +288,16 @@ void Game::GameLoop()
                             patterngame->correct(posx, posy);
                             patterngame->drawText(_mainWindow);
 
-                            if (patterngame->gameOver())
+                           if (patterngame->gameOver())
                            {
-                               randomizeGameState();
-
+                               player1->incrementScore(20);
+                               randomizeGameState(_gameState);
                                patterngame = NULL;
                                break;
                            }
+
+                           else
+                            player1->incrementScore(-5);
                         }
 
                     }
@@ -285,9 +330,12 @@ void Game::ShowMenu()
 	}
 }
 
-void Game::randomizeGameState()
+void Game::randomizeGameState(Game::GameState currentState)
 {
     int random = rand() % 5;
+
+    while (random == currentState) //ensures that the same game can never be played twice in a row
+        random = rand() % 5;
 
     switch (random)
     {
@@ -306,7 +354,6 @@ void Game::randomizeGameState()
         case 4:
         _gameState = Playing_pattern;
         break;
-
     }
 }
 

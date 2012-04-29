@@ -47,27 +47,33 @@ Map::Map(const char *fileName, mapType type)
         sf::Image floorTileImg = load_image("resource/img/floor.bmp");
         sf::Image emptyImg = load_image("resource/img/empty.bmp");
         sf::Image wallTileImg = load_image("resource/img/wall_stone.png");
-        sf::Image doorImg = load_image("resource/img/wooden_door_closed.png");
+        sf::Image doorImg = load_image("resource/img/wooden_door_open.png");
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                 {
                     switch (mapRepresentation[x][y])
                     {
-                        case '9':
+                        case '0':
                             tileset[x][y] = new WalkableTile(emptyImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
                         break;
 
-                        case '1':
+                        case '#':
                             tileset[x][y] = new WalkableTile(wallTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
                         break;
 
-                        case '0':
+                        case '.':
                             tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
                         break;
 
-                        case 'C':
+                        case 'e':
                             tileset[x][y] = new WalkableTile(doorImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_EXITABLE);
                         break;
+
+                        case 's':
+                            tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
+                            startTile = tileset[x][y];
+                            break;
+
                     }
                     //tileset[x][y]->loadSprite(); //Create sprite from the associated image
                 }
@@ -75,6 +81,11 @@ Map::Map(const char *fileName, mapType type)
     }
 
     inStream.close();
+}
+
+Tile* Map::getStartTile()
+{
+    return startTile;
 }
 
 Map::~Map()
