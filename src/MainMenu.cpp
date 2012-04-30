@@ -1,9 +1,7 @@
 #include "MainMenu.h"
 
-
 MainMenu::MenuResult MainMenu::Show(sf::RenderWindow& window)
 {
-
 	//Load menu image from file
 	sf::Image image;
 	image.LoadFromFile("resource/img/mainmenu.png");

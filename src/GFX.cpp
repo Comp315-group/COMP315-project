@@ -1,6 +1,8 @@
 #include "GFX.h"
 
-//load an image from a file
+/*
+    Load an image from file
+*/
 sf::Image load_image(std::string filename )
 {
     sf::Image tempImage;
@@ -10,8 +12,11 @@ sf::Image load_image(std::string filename )
     return tempImage;
 }
 
-//create a mask for an image
+/*
+    Create a mask for an image
+    The current mask is the colour turquoise
+*/
 void createMask(sf::Image &image)
 {
-image.CreateMaskFromColor(sf::Color(0, 255, 255), 0);
+    image.CreateMaskFromColor(sf::Color(0, 255, 255), 0);
 }

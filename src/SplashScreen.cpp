@@ -3,6 +3,7 @@
 
 void SplashScreen::Show(sf::RenderWindow & renderWindow)
 {
+    //the image for the splash screen
 	sf::Image image;
 	if(image.LoadFromFile("resource/img/SplashScreen.png") != true)
 	{

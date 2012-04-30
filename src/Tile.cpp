@@ -18,3 +18,9 @@ void Tile::loadSprite()
     sprite.SetX(getX());
     sprite.SetY(getY());
 }
+
+//set whether or not the contents of this tile are empty
+void Tile::setEmpty(bool b)
+{
+    empty = b;
+}
