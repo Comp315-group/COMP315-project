@@ -5,6 +5,10 @@
 // A quirk of C++, static member variables need to be instantiated outside of the class
 Game::GameState Game::_gameState = Uninitialized;
 sf::RenderWindow Game::_mainWindow;
+sf:: Music music;
+sf:: Music Click;
+sf:: Music Splash;
+sf:: Music Main;
 
 void Game::Start(void)
 {
@@ -22,6 +26,24 @@ void Game::Start(void)
 	hidegame = new HideGame();
 	matchinggame = new MatchingGame();
 	srand(time(0));
+  
+    if (!music.OpenFromFile("resource/sound/Bassett hound barking animals045.wav"))
+        return ;
+        music.Play();
+        music.SetLoop(true);
+
+    if (!Click.OpenFromFile("resource/sound/Button Click.wav"))
+     return;
+
+    if (!Splash.OpenFromFile("resource/sound/cell-phone-vibrate-1.wav"))
+     return;
+     Splash.SetLoop(true);
+
+       if (!Main.OpenFromFile("resource/sound/telephone-ring-1.wav"))
+     return;
+     Main.SetLoop(true);
+
+
 
     score_text.SetText("Score : " + toString(player1->getScore()));
     score_text.SetSize(30);
@@ -52,12 +74,19 @@ void Game::GameLoop()
 	{
 		case Game::ShowingMenu:
 			{
-				ShowMenu();
+				music.Pause();
+			         Main.Play();
+                                   ShowMenu();
+				Main.Stop();
+				music.Play();
 				break;
 			}
 		case Game::ShowingSplash:
 			{
-				ShowSplashScreen();
+				music.Pause();
+			         Splash.Play();
+                                   ShowSplashScreen();
+                                   Splash.Stop();
 				break;
 			}
 		case Game::Playing_maze:
@@ -88,8 +117,11 @@ void Game::GameLoop()
                             {
                                 if(currentEvent.Key.Code == sf::Key::Escape) ShowMenu();
 
-                                    else(mazegame->handle_input(player1, currentEvent));
-                            }
+                                    else{
+                                        (mazegame->handle_input(player1, currentEvent));
+                                         Click.Play();
+                                    }                            
+}
 
                         if (mazegame->gameOver())
                         {
@@ -127,6 +159,7 @@ void Game::GameLoop()
 						}
 
                     if(currentEvent.Type == currentEvent.MouseButtonPressed  && currentEvent.MouseButton.Button == sf:: Mouse::Left){
+                         Click.Play();
                           int posx = currentEvent.MouseButton.X;
                           int posy = currentEvent.MouseButton.Y;
 
@@ -179,6 +212,7 @@ void Game::GameLoop()
 						}
 
                     if(currentEvent.Type == currentEvent.MouseButtonPressed && currentEvent.MouseButton.Button == sf:: Mouse::Left){
+                          Click.Play();
                           int posx = currentEvent.MouseButton.X;
                           int posy = currentEvent.MouseButton.Y;
 
@@ -231,6 +265,7 @@ void Game::GameLoop()
 						}
 
                     if(currentEvent.Type == currentEvent.MouseButtonPressed && currentEvent.MouseButton.Button == sf:: Mouse::Left){
+                          Click.Play();
                           int posx = currentEvent.MouseButton.X;
                           int posy = currentEvent.MouseButton.Y;
 
@@ -281,6 +316,7 @@ void Game::GameLoop()
 						}
 
                     if(currentEvent.Type == currentEvent.MouseButtonPressed && currentEvent.MouseButton.Button == sf:: Mouse::Left){
+                           Click.Play();
                           int posx = currentEvent.MouseButton.X;
                           int posy = currentEvent.MouseButton.Y;
 
