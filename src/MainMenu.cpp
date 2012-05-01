@@ -11,18 +11,18 @@ MainMenu::MenuResult MainMenu::Show(sf::RenderWindow& window)
 
 	//Play menu item coordinates
 	MenuItem playButton;
-	playButton.rect.Top= 145;
-	playButton.rect.Bottom = 380;
-	playButton.rect.Left = 0;
-	playButton.rect.Right = 1023;
+	playButton.rect.Top= 248;
+	playButton.rect.Bottom = 475;
+	playButton.rect.Left = 85;
+	playButton.rect.Right = 940;
 	playButton.action = Play;
 
 	//Exit menu item coordinates
 	MenuItem exitButton;
-	exitButton.rect.Left = 0;
-	exitButton.rect.Right = 1023;
-	exitButton.rect.Top = 383;
-	exitButton.rect.Bottom = 560;
+	exitButton.rect.Left = 85;
+	exitButton.rect.Right = 945;
+	exitButton.rect.Top = 532;
+	exitButton.rect.Bottom = 702;
 	exitButton.action = Exit;
 
 	_menuItems.push_back(playButton);
