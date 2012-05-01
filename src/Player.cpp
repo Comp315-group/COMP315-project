@@ -73,6 +73,16 @@ void Player::setSprite(sf::Sprite sprite_){
     sprite = sprite_;
 }
 
+void Player::changeAvatar(sf::Image new_avatar)
+{
+    avatar = new_avatar;
+    avatar_sprite.SetImage(avatar);
+
+    //for now, the avatar's location is hard-coded to be first place on the win screen
+    avatar_sprite.SetX(455);
+    avatar_sprite.SetY(180);
+}
+
 Player::~Player()
 {
     //dtor

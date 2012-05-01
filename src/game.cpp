@@ -58,8 +58,6 @@ void Game::Start(void)
 
     //initialise the sound manager
 	sound_manager.init();
-	//start playing game music at this point
-	sound_manager.playBGMusic();
 
     //initialise the text that notifies the player about their score
     score_text.SetText("Score : " + toString(player1->getScore()));
@@ -104,15 +102,23 @@ void Game::GameLoop()
 	    //game menu is currently being displayed
 		case Game::ShowingMenu:
         {
-                ShowMenu();
-				break;
+            ShowMenu();
+            break;
         }
 
         //splash menu is currently being displayed
 		case Game::ShowingSplash:
         {
-                ShowSplashScreen();
-				break;
+            ShowSplashScreen();
+            break;
+        }
+
+        //Player creation is taking place
+        case Game::Creating_Player:
+        {
+            ShowPlayerCreationScreen();
+            break;
+        }
 
         //maze game is currently being played
 		case Game::Playing_maze:
@@ -462,7 +468,7 @@ void Game::GameLoop()
            while(_mainWindow.GetEvent(currentEvent))
 					{
 					_mainWindow.Clear(sf::Color(0,0,0));
-
+                    _mainWindow.Draw(bgSprite);
                     wordfilgame->draw(_mainWindow);
 
                      //Update and draw player score to screen
@@ -475,7 +481,12 @@ void Game::GameLoop()
 
 					if(currentEvent.Type == sf::Event::KeyPressed)
 						{
-							if(currentEvent.Key.Code == sf::Key::Escape) ShowMenu();
+							if(currentEvent.Key.Code == sf::Key::Escape)
+                                {
+                                 tempGameState = _gameState;
+                                 _gameState = Paused;
+                                 ShowMenu();
+                                }
 						}
 
                     if(currentEvent.Type == currentEvent.MouseButtonPressed  && currentEvent.MouseButton.Button == sf:: Mouse::Left){
@@ -509,6 +520,111 @@ void Game::GameLoop()
         break;
     }
 
+    case Game::Playing_wordsearch:
+            {
+            sf::Event currentEvent;
+            if (wordsearchgame == NULL)
+                wordsearchgame = new WordSearchGame();
+            while(_mainWindow.GetEvent(currentEvent))
+            {
+                _mainWindow.Clear(sf::Color(0,0,0));
+                _mainWindow.Draw(bgSprite);
+                wordsearchgame->draw(_mainWindow);
+
+                 //Update and draw player score to screen
+                 score_text.SetText("Score : " + toString(player1->getScore()));
+                 _mainWindow.Draw(score_text);
+
+                if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
+
+                if(currentEvent.Type == sf::Event::KeyPressed)
+                {
+                    if(currentEvent.Key.Code == sf::Key::Escape)
+                                {
+                                 tempGameState = _gameState;
+                                 _gameState = Paused;
+                                 ShowMenu();
+                                }
+                }
+
+                if(currentEvent.Type == currentEvent.MouseButtonPressed && currentEvent.MouseButton.Button == sf:: Mouse::Left){
+                    int posx = currentEvent.MouseButton.X;
+                    int posy = currentEvent.MouseButton.Y;
+
+                    if((posx >= 400 && posx <= 625) && (posy >= 300 && posy <= 525)){
+                        wordsearchgame->update(posx, posy);
+                        wordsearchgame->drawText(_mainWindow);
+
+                        if (wordsearchgame->gameOver())
+                        {
+                            sound_manager.playCorrectSound();
+                            score_text.SetColor(sf::Color::Green);
+                            player1->incrementScore(10);
+                            randomizeGameState(_gameState);
+
+                            wordsearchgame = NULL;
+                            break;
+                        }
+
+                    }
+                }
+                _mainWindow.Display();
+            }
+            break;
+            }
+
+            case Game::Playing_memory:
+            {
+            sf::Event currentEvent;
+            if (memorygame == NULL)
+                memorygame = new MemoryGame();
+
+            while(_mainWindow.GetEvent(currentEvent))
+            {
+                _mainWindow.Clear(sf::Color(0,0,0));
+                _mainWindow.Draw(bgSprite);
+                memorygame->draw(_mainWindow);
+
+                 //Update and draw player score to screen
+                 score_text.SetText("Score : " + toString(player1->getScore()));
+                 _mainWindow.Draw(score_text);
+
+                if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
+
+                if(currentEvent.Type == sf::Event::KeyPressed)
+                {
+                    if(currentEvent.Key.Code == sf::Key::Escape)
+                    {
+                           tempGameState = _gameState;
+                           _gameState = Paused;
+                           ShowMenu();
+                    }
+                }
+
+                if(currentEvent.Type == currentEvent.MouseButtonPressed && currentEvent.MouseButton.Button == sf:: Mouse::Left){
+                    int posx = currentEvent.MouseButton.X;
+                    int posy = currentEvent.MouseButton.Y;
+
+                    if((posx >= 375 && posx <= 675) && (posy >= 275 && posy <= 575)){
+                        memorygame->update(posx, posy, _mainWindow);
+
+                        if (memorygame->gameOver())
+                        {
+                            sound_manager.playCorrectSound();
+                            score_text.SetColor(sf::Color::Green);
+                            player1->incrementScore(50);
+                            randomizeGameState(_gameState);
+
+                            memorygame = NULL;
+                            break;
+                        }
+                    }
+                }
+                _mainWindow.Display();
+            }
+            break;
+            }
+
 
             //a player has won the game
             case Game::Game_over:
@@ -525,6 +641,15 @@ void Game::GameLoop()
                     //clear window, draw the game over image
                     _mainWindow.Clear(sf::Color(0, 0, 0));
                     _mainWindow.Draw(gameOverSprite);
+                    _mainWindow.Draw(player1->getAvatar());
+                    sf::String nameText;
+                    nameText.SetX(435);
+                    nameText.SetY(275);
+                    nameText.SetText(player1->getName());
+                    nameText.SetColor(sf::Color::Red);
+                    _mainWindow.Draw(nameText);
+                    score_text.SetPosition(435, 300);
+                    _mainWindow.Draw(score_text);
                     _mainWindow.Display();
 
                     //close button clicked
@@ -539,7 +664,6 @@ void Game::GameLoop()
                 }
                 break;
             }
-        }
     }
 
     //Win condition has been met
@@ -573,6 +697,10 @@ void Game::ShowMenu()
 {
     //create main menu
 	MainMenu mainMenu;
+
+    //start playing background music
+    sound_manager.playBGMusic();
+
 	//get result
 	MainMenu::MenuResult result = mainMenu.Show(_mainWindow);
 	switch(result)
@@ -589,8 +717,10 @@ void Game::ShowMenu()
 
         //start game by randomizing the game state
         else
-			//randomizeGameState(_gameState);
-			_gameState = Playing_wordfill;
+            //hack for now to fix a bug
+             score_text.SetX(0);
+             score_text.SetY(0);
+			_gameState = Creating_Player;
 			break;
 	}
 }
@@ -601,7 +731,7 @@ void Game::ShowMenu()
 */
 void Game::randomizeGameState(Game::GameState currentState)
 {
-    int random = rand() % 6;
+    int random = rand() % 8;
 
     int cur = 0;
     switch(currentState)
@@ -630,11 +760,17 @@ void Game::randomizeGameState(Game::GameState currentState)
             cur = 5;
             break;
 
+        case Playing_memory:
+            cur = 6;
+            break;
+
+        case Playing_wordsearch:
+            cur = 7;
     }
 
     //ensures that the same game can never be played twice in a row
     while (random == cur)
-        random = rand() % 6;
+        random = rand() % 8;
 
     switch (random)
     {
@@ -656,6 +792,97 @@ void Game::randomizeGameState(Game::GameState currentState)
         case 5:
         _gameState = Playing_wordfill;
         break;
+        case 6:
+        _gameState = Playing_memory;
+        break;
+        case 7:
+        _gameState = Playing_wordsearch;
+        break;
+
+    }
+}
+
+void Game::ShowPlayerCreationScreen()
+{
+    PlayerMenu plMenu;
+
+    while (!plMenu.isFinished())
+    {
+        //get result
+        PlayerMenu::MenuResult result = plMenu.Show(_mainWindow);
+        sf::Image tempImg;
+        switch(result)
+        {
+            case PlayerMenu::exit:
+                plMenu.setFinished(true);
+                _gameState = Exiting;
+                break;
+
+            case PlayerMenu::play:
+
+                if (!plMenu.hasAvatar() || plMenu.getName() == "")
+                    return;
+
+                player1->setName(plMenu.getName());
+                player1->changeAvatar(plMenu.getPortrait());
+
+                plMenu.setFinished(true);
+                //start mini-games
+                randomizeGameState(_gameState);
+
+            case PlayerMenu::keyboard:
+                plMenu.updateName(plMenu.getClickedItem().letter);
+                break;
+
+            case PlayerMenu::m1:
+                tempImg = load_image("resource/img/avatar/m1.png");
+                plMenu.setChoseAvatar(true);
+                plMenu.updatePortrait(tempImg);
+                break;
+
+            case PlayerMenu::m2:
+                tempImg = load_image("resource/img/avatar/m2.png");
+                plMenu.updatePortrait(tempImg);
+                plMenu.setChoseAvatar(true);
+                break;
+
+            case PlayerMenu::m3:
+                tempImg = load_image("resource/img/avatar/m3.png");
+                plMenu.updatePortrait(tempImg);
+                plMenu.setChoseAvatar(true);
+                break;
+
+            case PlayerMenu::m4:
+                tempImg = load_image("resource/img/avatar/m4.png");
+                plMenu.updatePortrait(tempImg);
+                plMenu.setChoseAvatar(true);
+                break;
+
+            case PlayerMenu::f1:
+                tempImg = load_image("resource/img/avatar/f1.png");
+                plMenu.updatePortrait(tempImg);
+                plMenu.setChoseAvatar(true);
+                break;
+
+            case PlayerMenu::f2:
+                tempImg = load_image("resource/img/avatar/f2.png");
+                plMenu.updatePortrait(tempImg);
+                plMenu.setChoseAvatar(true);
+                break;
+
+            case PlayerMenu::f3:
+                tempImg = load_image("resource/img/avatar/f3.png");
+                plMenu.updatePortrait(tempImg);
+                plMenu.setChoseAvatar(true);
+                break;
+
+            case PlayerMenu::f4:
+                tempImg = load_image("resource/img/avatar/f4.png");
+                plMenu.updatePortrait(tempImg);
+                plMenu.setChoseAvatar(true);
+                break;
+
+        }
     }
 }
 

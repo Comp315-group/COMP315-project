@@ -50,7 +50,7 @@ MazeGame::MazeGame()
     srand(time(0));
 
     //choose random maze
-    int num = rand() % 3;
+    int num = rand() % 4;
     switch (num)
     {
         case 0:
@@ -63,6 +63,10 @@ MazeGame::MazeGame()
 
         case 2:
             map = new Map("resource/map/maze3.map", Map::Maze_map);
+            break;
+
+        case 3:
+            map = new Map("resource/map/maze4.map", Map::Maze_map);
             break;
 
         default:

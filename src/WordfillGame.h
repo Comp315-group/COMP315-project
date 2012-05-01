@@ -103,7 +103,7 @@ void WordfillGame :: draw(sf::RenderWindow &gameWindow)
         gameWindow.Draw(t);
 
          sf :: String Text;
-        string findword = " Complete the word for this picture \n       by click on the letters below";
+        string findword = " Complete the word for this picture \n      by clicking on the letters below";
 
         Text.SetText(findword);
         Text.SetSize(60);

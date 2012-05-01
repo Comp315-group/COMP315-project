@@ -15,6 +15,9 @@
 #include "PatternGame.h"
 #include "WordfillGame.h"
 #include "SoundManager.h"
+#include "WordSearchGame.h"
+#include "MemoryGame.h"
+#include "PlayerMenu.h"
 
 ////////////////////////
 ////PLAYER OBJECTS//////
@@ -31,6 +34,8 @@ HideGame *hidegame;
 MatchingGame *matchinggame;
 PatternGame *patterngame;
 WordfillGame *wordfilgame;
+WordSearchGame *wordsearchgame;
+MemoryGame *memorygame;
 
 //Used to display player score
 sf::String score_text;
@@ -55,10 +60,12 @@ private:
 
 	static void ShowSplashScreen();
 	static void ShowMenu();
+	static void ShowPlayerCreationScreen();
 
 
     enum GameState { Uninitialized, ShowingSplash, Paused,
-					ShowingMenu, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Playing_wordfill, Game_over, Exiting };
+					ShowingMenu, Creating_Player, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Playing_wordfill, Playing_memory,
+					Playing_wordsearch, Game_over, Exiting };
 
     static void randomizeGameState(GameState currentState);
 
