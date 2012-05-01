@@ -13,7 +13,7 @@
 #include "HideGame.h"
 #include "MatchingGame.h"
 #include "PatternGame.h"
-#include "GameTimer.h"
+#include "WordfillGame.h"
 #include "SoundManager.h"
 
 ////////////////////////
@@ -30,6 +30,7 @@ MazeGame *mazegame;
 HideGame *hidegame;
 MatchingGame *matchinggame;
 PatternGame *patterngame;
+WordfillGame *wordfilgame;
 
 //Used to display player score
 sf::String score_text;
@@ -57,7 +58,7 @@ private:
 
 
     enum GameState { Uninitialized, ShowingSplash, Paused,
-					ShowingMenu, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Game_over, Exiting };
+					ShowingMenu, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Playing_wordfill, Game_over, Exiting };
 
     static void randomizeGameState(GameState currentState);
 

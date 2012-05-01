@@ -51,6 +51,7 @@ void Game::Start(void)
 	mazegame->setPlayerStartLocation(player1);
 	hidegame = new HideGame();
 	matchinggame = new MatchingGame();
+	wordfilgame = new WordfillGame();
 
 	//seed RNG
 	srand(time(0));
@@ -453,6 +454,62 @@ void Game::GameLoop()
 					break;
             }
 
+        case Game::Playing_wordfill:{
+          sf::Event currentEvent;
+			   if (wordfilgame == NULL)
+                    wordfilgame = new WordfillGame();
+
+           while(_mainWindow.GetEvent(currentEvent))
+					{
+					_mainWindow.Clear(sf::Color(0,0,0));
+
+                    wordfilgame->draw(_mainWindow);
+
+                     //Update and draw player score to screen
+                    score_text.SetText("Score : " + toString(player1->getScore()));
+                    _mainWindow.Draw(score_text);
+
+                    _mainWindow.Display();
+
+					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
+
+					if(currentEvent.Type == sf::Event::KeyPressed)
+						{
+							if(currentEvent.Key.Code == sf::Key::Escape) ShowMenu();
+						}
+
+                    if(currentEvent.Type == currentEvent.MouseButtonPressed  && currentEvent.MouseButton.Button == sf:: Mouse::Left){
+                          int posx = currentEvent.MouseButton.X;
+                          int posy = currentEvent.MouseButton.Y;
+
+                        if((posx >= 320 && posx <= 720) && (posy >= 400 && posy <= 600)){
+
+                            wordfilgame->correct(posx, posy);
+
+                            if(wordfilgame->gameOver())
+                            {
+                                sound_manager.playCorrectSound();
+                                score_text.SetColor(sf::Color::Green);
+                                player1->incrementScore(20);
+                                randomizeGameState(_gameState);   //move to next game
+                                wordfilgame = NULL;
+                                break;
+                            }
+
+                            else
+                            {
+                            sound_manager.playIncorrectSound();
+                            score_text.SetColor(sf::Color::Red);
+                            player1->incrementScore(-5);
+                            _mainWindow.Display();
+                            }
+                        }
+                    }
+                }
+        break;
+    }
+
+
             //a player has won the game
             case Game::Game_over:
             {
@@ -532,7 +589,8 @@ void Game::ShowMenu()
 
         //start game by randomizing the game state
         else
-			randomizeGameState(_gameState);
+			//randomizeGameState(_gameState);
+			_gameState = Playing_wordfill;
 			break;
 	}
 }
@@ -543,7 +601,7 @@ void Game::ShowMenu()
 */
 void Game::randomizeGameState(Game::GameState currentState)
 {
-    int random = rand() % 5;
+    int random = rand() % 6;
 
     int cur = 0;
     switch(currentState)
@@ -568,11 +626,15 @@ void Game::randomizeGameState(Game::GameState currentState)
             cur = 4;
             break;
 
+        case Playing_wordfill:
+            cur = 5;
+            break;
+
     }
 
     //ensures that the same game can never be played twice in a row
     while (random == cur)
-        random = rand() % 5;
+        random = rand() % 6;
 
     switch (random)
     {
@@ -590,6 +652,9 @@ void Game::randomizeGameState(Game::GameState currentState)
         break;
         case 4:
         _gameState = Playing_pattern;
+        break;
+        case 5:
+        _gameState = Playing_wordfill;
         break;
     }
 }
