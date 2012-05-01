@@ -482,9 +482,10 @@ void Game::GameLoop()
                 }
                 break;
             }
-	}
+        }
+    }
 
-	//Win condition has been met
+    //Win condition has been met
 	if (player1->getScore() >= 200)
 	{
             //stop main music
@@ -495,7 +496,6 @@ void Game::GameLoop()
             //set game state to indicate that the game is over
             _gameState = Game_over;
 	}
-}
 
 }
 
