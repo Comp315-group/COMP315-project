@@ -24,6 +24,7 @@ class WordfillGame
                 string Word;
                 int size;
                 char out;
+                char other;
 
                 string random_words();
                 vector<char> * fill_Word_complete();
@@ -57,7 +58,7 @@ return WordfillGameOver;
 void WordfillGame :: correct(int x, int y)
 {
 
-    if((x >= 320&& x <=510) && (y >=400 && y <= 600)){
+    if((x >= 320&& x <=500) && (y >=400 && y <= 600)){
         set_correctString(0);
     }
     else if((x >= 520 && x <= 720) && (y >=400 && y <= 600)){
@@ -160,39 +161,55 @@ string WordfillGame :: schange(char letter)
 
 string WordfillGame :: random_words()
 {
-int num = rand() % 4;
+int num = rand() % 15;
 switch(num){
     case 0:
+             other = 'D';
             return "HAT";
     case 1:
+            other = 'T';
             return "CAR";
     case 2:
+             other = 'Q';
             return "CAT";
     case 3:
+             other = 'W';
             return "CAP";
     case 4:
+             other = 'S';
             return "COW";
     case 5:
+             other = 'P';
             return "BUG";
     case 6:
+             other = 'E';
             return "PIG";
     case 7:
+             other = 'K';
             return "HEN";
     case 8:
+             other = 'Z';
             return "DOG";
     case 9:
+            other = 'V';
             return "SAW";
     case 10:
+             other = 'Y';
             return "CAN";
     case 11:
+             other = 'T';
             return "PEA";
     case 12:
+             other = 'J';
             return "PEN";
     case 13:
+             other = 'X';
             return "MAN";
     case 14:
+             other = 'B';
             return "SEA";
     case 15:
+             other = 'J';
             return "SUN";
      default:
             return NULL;
@@ -219,9 +236,13 @@ vector<char> * WordfillGame :: fill_random_letters()
 {
     vector <char> * complete = new vector <char>;
     complete->push_back(out);
-    int n = rand() % 26;
-    char c = (n+65);
-    complete->push_back(c);
+    complete->push_back(other);
+ 
+    int num = rand() % 2;
+    int num1 = rand() % 2;
+    char t = complete->at(num);
+    complete->at(num) = complete->at(num1);
+    complete->at(num1) = t;
 
 return complete;
 }
