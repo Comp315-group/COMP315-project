@@ -30,8 +30,19 @@ void Game::Start(void)
     //Main display window initialised to 1024x768 and 32bit colour-depth
 	_mainWindow.Create(sf::VideoMode(1024,768,32),"EduGame");
 
+	//Custom cursor is drawn in place of the default cursor
+	_mainWindow.ShowMouseCursor(false);
+
+	//Custom window icon
+	sf::Image icon = load_image("resource/img/icon.png");
+	_mainWindow.SetIcon(32, 32, icon.GetPixelsPtr());
+
     //create player object(s)
     player1 = new Player("lunch", load_image("resource/img/player.bmp"));
+
+    //load the image for the mouse cursor
+    sf::Image mouseImg = load_image("resource/img/cursor.png");
+    cursor.SetImage(mouseImg);
 
     //load background image and initialise corresponding sprite
     bgImage = load_image("resource/img/bg.jpg");
@@ -147,9 +158,19 @@ void Game::GameLoop()
                         //Update and draw player score to screen
                         score_text.SetText("Score : " + toString(player1->getScore()));
                         _mainWindow.Draw(score_text);
+                        _mainWindow.Draw(cursor);
 
                         //update the main window
                         _mainWindow.Display();
+
+                        //mouse was moved, move custom cursor
+                        if (currentEvent.Type == sf::Event::MouseMoved)
+                        {
+                            int x = currentEvent.MouseMove.X;
+                            int y = currentEvent.MouseMove.Y;
+
+                            cursor.SetPosition(x, y);
+                        }
 
                         //close button was clicked
                         if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
@@ -219,9 +240,19 @@ void Game::GameLoop()
                     //Update and draw player score to screen
                     score_text.SetText("Score : " + toString(player1->getScore()));
                     _mainWindow.Draw(score_text);
+                    _mainWindow.Draw(cursor);
 
                     //update main window
                     _mainWindow.Display();
+
+                    //mouse was moved, move custom cursor
+                    if (currentEvent.Type == sf::Event::MouseMoved)
+                    {
+                            int x = currentEvent.MouseMove.X;
+                            int y = currentEvent.MouseMove.Y;
+
+                            cursor.SetPosition(x, y);
+                    }
 
                     //close button was clicked
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
@@ -249,6 +280,7 @@ void Game::GameLoop()
                         if((posx >= 10 && posx <= 1000) && (posy >= 250 && posy <= 500)){
                             oddonegame->correct(posx, posy);
                             oddonegame->drawText(_mainWindow);
+                           // _mainWindow.Draw(cursor);
 
                             if(oddonegame->gameOver())
                             {
@@ -290,6 +322,16 @@ void Game::GameLoop()
                     //Update and draw player score to screen
                     score_text.SetText("Score : " + toString(player1->getScore()));
                     _mainWindow.Draw(score_text);
+                    _mainWindow.Draw(cursor);
+
+                    //mouse was moved, move custom cursor
+                    if (currentEvent.Type == sf::Event::MouseMoved)
+                    {
+                            int x = currentEvent.MouseMove.X;
+                            int y = currentEvent.MouseMove.Y;
+
+                            cursor.SetPosition(x, y);
+                    }
 
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
@@ -354,6 +396,16 @@ void Game::GameLoop()
                     //Update and draw player score to screen
                     score_text.SetText("Score : " + toString(player1->getScore()));
                     _mainWindow.Draw(score_text);
+                    _mainWindow.Draw(cursor);
+
+                     //mouse was moved, move custom cursor
+                    if (currentEvent.Type == sf::Event::MouseMoved)
+                    {
+                        int x = currentEvent.MouseMove.X;
+                        int y = currentEvent.MouseMove.Y;
+
+                        cursor.SetPosition(x, y);
+                    }
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -415,6 +467,16 @@ void Game::GameLoop()
                     //Update and draw player score to screen
                     score_text.SetText("Score : " + toString(player1->getScore()));
                     _mainWindow.Draw(score_text);
+                    _mainWindow.Draw(cursor);
+
+                     //mouse was moved, move custom cursor
+                    if (currentEvent.Type == sf::Event::MouseMoved)
+                    {
+                        int x = currentEvent.MouseMove.X;
+                        int y = currentEvent.MouseMove.Y;
+
+                        cursor.SetPosition(x, y);
+                    }
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -474,8 +536,18 @@ void Game::GameLoop()
                      //Update and draw player score to screen
                     score_text.SetText("Score : " + toString(player1->getScore()));
                     _mainWindow.Draw(score_text);
+                    _mainWindow.Draw(cursor);
 
                     _mainWindow.Display();
+
+                     //mouse was moved, move custom cursor
+                    if (currentEvent.Type == sf::Event::MouseMoved)
+                    {
+                        int x = currentEvent.MouseMove.X;
+                        int y = currentEvent.MouseMove.Y;
+
+                        cursor.SetPosition(x, y);
+                    }
 
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -534,6 +606,16 @@ void Game::GameLoop()
                  //Update and draw player score to screen
                  score_text.SetText("Score : " + toString(player1->getScore()));
                  _mainWindow.Draw(score_text);
+                 _mainWindow.Draw(cursor);
+
+                  //mouse was moved, move custom cursor
+                    if (currentEvent.Type == sf::Event::MouseMoved)
+                    {
+                            int x = currentEvent.MouseMove.X;
+                            int y = currentEvent.MouseMove.Y;
+
+                            cursor.SetPosition(x, y);
+                    }
 
                 if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -588,6 +670,16 @@ void Game::GameLoop()
                  //Update and draw player score to screen
                  score_text.SetText("Score : " + toString(player1->getScore()));
                  _mainWindow.Draw(score_text);
+                 _mainWindow.Draw(cursor);
+
+                  //mouse was moved, move custom cursor
+                    if (currentEvent.Type == sf::Event::MouseMoved)
+                    {
+                            int x = currentEvent.MouseMove.X;
+                            int y = currentEvent.MouseMove.Y;
+
+                            cursor.SetPosition(x, y);
+                    }
 
                 if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
 
@@ -607,6 +699,7 @@ void Game::GameLoop()
 
                     if((posx >= 375 && posx <= 675) && (posy >= 275 && posy <= 575)){
                         memorygame->update(posx, posy, _mainWindow);
+                        _mainWindow.Draw(cursor);
 
                         if (memorygame->gameOver())
                         {
@@ -650,7 +743,17 @@ void Game::GameLoop()
                     _mainWindow.Draw(nameText);
                     score_text.SetPosition(435, 300);
                     _mainWindow.Draw(score_text);
+                    _mainWindow.Draw(cursor);
                     _mainWindow.Display();
+
+                     //mouse was moved, move custom cursor
+                        if (currentEvent.Type == sf::Event::MouseMoved)
+                        {
+                            int x = currentEvent.MouseMove.X;
+                            int y = currentEvent.MouseMove.Y;
+
+                            cursor.SetPosition(x, y);
+                        }
 
                     //close button clicked
                     if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
@@ -677,7 +780,6 @@ void Game::GameLoop()
             //set game state to indicate that the game is over
             _gameState = Game_over;
 	}
-
 }
 
 /*
@@ -702,26 +804,34 @@ void Game::ShowMenu()
     sound_manager.playBGMusic();
 
 	//get result
-	MainMenu::MenuResult result = mainMenu.Show(_mainWindow);
-	switch(result)
+	while (!mainMenu.tookMeaningfulAction())
 	{
-        //exit was clicked
-        case MainMenu::Exit:
-			_gameState = Game::Exiting;
-			break;
-        //play was clicked
-		case MainMenu::Play:
-		//if the player paused the game before, this resumes the game
-		if (_gameState == Paused)
-            _gameState = tempGameState;
+        MainMenu::MenuResult result = mainMenu.Show(_mainWindow);
 
-        //start game by randomizing the game state
-        else
-            //hack for now to fix a bug
-             score_text.SetX(0);
-             score_text.SetY(0);
-			_gameState = Creating_Player;
-			break;
+        switch(result)
+        {
+            //exit was clicked
+            case MainMenu::Exit:
+                mainMenu.setMAction(true);
+                _gameState = Game::Exiting;
+                break;
+            //play was clicked
+            case MainMenu::Play:
+                mainMenu.setMAction(true);
+            //if the player paused the game before, this resumes the game
+            if (_gameState == Paused)
+                _gameState = tempGameState;
+
+            //start game by randomizing the game state
+            else
+            {
+                //hack for now to fix a bug
+                score_text.SetX(0);
+                score_text.SetY(0);
+                _gameState = Creating_Player;
+            }
+                break;
+        }
 	}
 }
 
@@ -881,7 +991,6 @@ void Game::ShowPlayerCreationScreen()
                 plMenu.updatePortrait(tempImg);
                 plMenu.setChoseAvatar(true);
                 break;
-
         }
     }
 }

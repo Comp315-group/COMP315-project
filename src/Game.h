@@ -46,6 +46,9 @@ sf::Sprite bgSprite;
 sf::Image gameOverImage;
 sf::Sprite gameOverSprite;
 
+//The sprite for the custom mouse cursor
+sf::Sprite cursor;
+
 //sound manager for the game
 SoundManager sound_manager;
 

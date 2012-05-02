@@ -11,7 +11,9 @@ class MainMenu
 
 public:
 	enum MenuResult { Nothing, Exit, Play };
-
+    MainMenu();
+    void setMAction(bool b) {mAction = b;}
+    bool tookMeaningfulAction() const {return mAction;}
 	struct MenuItem
 		{
 		public:
@@ -22,9 +24,16 @@ public:
 	MenuResult Show(sf::RenderWindow& window);
 
 private:
+    //player clicked an appropriate button
+    bool mAction;
 	MenuResult GetMenuResponse(sf::RenderWindow& window);
 	MenuResult HandleClick(int x, int y);
 	std::list<MenuItem> _menuItems;
+	//custom cursor
+	sf::Image cursorImage;
+	sf::Sprite cursor;
+	//menu sprite
+	sf::Sprite bgSprite;
 };
 
 #endif // MAINMENU_H_INCLUDED

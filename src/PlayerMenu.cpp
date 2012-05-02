@@ -1,4 +1,5 @@
 #include "PlayerMenu.h"
+#include "GFX.h"
 
 PlayerMenu::MenuResult  PlayerMenu::GetMenuResponse(sf::RenderWindow& window)
 {
@@ -9,6 +10,21 @@ PlayerMenu::MenuResult  PlayerMenu::GetMenuResponse(sf::RenderWindow& window)
 
 		while(window.GetEvent(menuEvent))
 		{
+		    if (menuEvent.Type == sf::Event::MouseMoved)
+		    {
+		        int x = menuEvent.MouseMove.X;
+		        int y = menuEvent.MouseMove.Y;
+
+		        cursor.SetPosition(x, y);
+		        window.Draw(image);
+		          if (selectedPortrait != NULL)
+                    window.Draw(*selectedPortrait);
+
+                window.Draw(nameText);
+                window.Draw(cursor);
+                window.Display();
+		    }
+
 		    if (menuEvent.Type == sf::Event::Closed)
                 return exit;
 
@@ -81,6 +97,9 @@ PlayerMenu::PlayerMenu()
     nameText.SetPosition(482, 515);
     nameText.SetColor(sf::Color::Cyan);
     nameText.SetText(name);
+    //custom cursor
+	cursorImage = load_image("resource/img/cursor.png");
+	cursor.SetImage(cursorImage);
 
     selectedPortrait = NULL;
 }
@@ -88,7 +107,7 @@ PlayerMenu::PlayerMenu()
 PlayerMenu::MenuResult PlayerMenu::Show(sf::RenderWindow& window)
 {
 
-     //Load menu image from file
+    //Load menu image from file
 	sf::Image img;
 	img.LoadFromFile("resource/img/Playermenu.png");
 	image.SetImage(img);
@@ -261,6 +280,7 @@ PlayerMenu::MenuResult PlayerMenu::Show(sf::RenderWindow& window)
         window.Draw(*selectedPortrait);
 
 	window.Draw(nameText);
+    window.Draw(cursor);
 	window.Display();
 
 	return GetMenuResponse(window);

@@ -57,5 +57,8 @@ private:
 	sf::Sprite *selectedPortrait;
 	//The image for the portrait sprite
 	sf::Image selectedPortraitImage;
+	//custom cursor
+	sf::Image cursorImage;
+	sf::Sprite cursor;
 
 };

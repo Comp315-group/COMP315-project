@@ -3,7 +3,6 @@
 
 #include <string>
 #include <SFML/Graphics.HPP>
-//#include "GFX.h"
 
 using namespace std;
 

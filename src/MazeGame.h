@@ -8,7 +8,6 @@
 #include "GFX.h"
 #include <SFML/Window.hpp>
 #include "Map.h"
-#include <iostream>
 
 #endif // MAZEGAME_H_INCLUDED
 
