@@ -22,6 +22,8 @@ class HideGame
                 vector<string> * hide_seek;
                 string to_find;
                 string display;
+                vector <Sprite> * Test;
+                vector<Image> * Images;
 
                 vector<string> * fill();
                 vector<string> * fill_names(int);
@@ -32,6 +34,8 @@ class HideGame
                 void set_correctString(int);
                 int X(int);
                 int Y(int);
+                void load();
+
 };
 
 HideGame :: HideGame()
@@ -45,35 +49,43 @@ HideGame :: HideGame()
     swap_fill();
     }
 
+    load();
+
+}
+
+void HideGame :: load(){
+     Test = new vector<Sprite>(15);
+      Images = new vector<Image> (15);
+
+       Image image;
+    for(int i = 0; i < 15; i++){
+        image.LoadFromFile("resource/img/hide/"  + hide_seek->at(i) + ".jpg");
+        Images->at(i) = image;
+
+        Sprite s;
+        s.SetImage(Images->at(i));
+        s.SetPosition(X(i), Y(i));
+        s.Resize(150,150);
+        Test->at(i) = s;
+        }
 }
 
 void HideGame :: draw(sf::RenderWindow &gameWindow)
 {
 
- vector <Sprite> * Test = new vector<Sprite>(15);
-        Image image;
-        for(int i = 0; i < 15; i++){
-        image.LoadFromFile("resource/img/hide/"  + hide_seek->at(i) + ".jpg");
-
-        Sprite s;
-        s.SetImage(image);
-        s.SetPosition(X(i), Y(i));
-        s.Resize(150,150);
-
-        Test->at(i) = s;
-
-        gameWindow.Draw(Test -> at(i));
+         for(int i = 0; i < 15; i++){
+               gameWindow.Draw(Test -> at(i));
         }
 
         sf :: String Text;
-        string findword = "Click on the ";
+        string findword = "Find the ";
         findword.append(to_find);
-        findword.append("\n   in the grid below");
+        findword.append(" in the grid");
 
         Text.SetText(findword);
-        Text.SetSize(70);
+        Text.SetSize(80);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(200,10);
+        Text.SetPosition(10,50);
         gameWindow.Draw(Text);
 
         DrawText(gameWindow);
