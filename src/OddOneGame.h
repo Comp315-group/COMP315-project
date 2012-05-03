@@ -59,7 +59,7 @@ void OddOneGame :: correct(int x, int y)
 OddOneGame::OddOneGame()
 {
     OddOneGameOver = false;
-     oddoneout = setstring(1 + (rand() % 16));
+     oddoneout = setstring(1 + (rand() % 15));
      swap();
      load();
      
@@ -267,14 +267,7 @@ vector<string> * OddOneGame:: setstring(int num)
                         total->push_back("Watermelon");
                         word = "Watermelon";
                         return total;
-                case 16:
-                        total->push_back("Fluttershy");
-                        total->push_back("Pinkiepie");
-                        total->push_back("Rainbowdash");
-                        total->push_back("Derpy");
-                        word = "Derpy";
-                        return total;
-
+               
                 default:
                     return NULL;
 
