@@ -28,7 +28,7 @@ void Game::Start(void)
 		return;
 
     //Main display window initialised to 1024x768 and 32bit colour-depth
-	_mainWindow.Create(sf::VideoMode(1024,768,32),"EduGame");
+	_mainWindow.Create(sf::VideoMode(1024,768,32),"EduGame",sf::Style::Close);
 
 	//Custom cursor is drawn in place of the default cursor
 	_mainWindow.ShowMouseCursor(false);

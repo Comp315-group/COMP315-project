@@ -26,6 +26,13 @@ class WordfillGame
                 char out;
                 char other;
 
+                vector<Sprite> * Display;
+                vector<Image> * ImageT;
+                vector<Sprite> * wrong_ones;
+                vector<Image> * Images;
+                Sprite pic;
+                Image picture;
+
                 string random_words();
                 vector<char> * fill_Word_complete();
                 vector<char> * fill_random_letters();
@@ -34,7 +41,8 @@ class WordfillGame
                 bool WordfillGameOver;
                 void set_correctString(int);
                 int X(int i);
-                 string schange(char);
+                string schange(char);
+                void load();
 
 
 
@@ -42,11 +50,13 @@ class WordfillGame
 
 WordfillGame::WordfillGame()
 {
+
     Word = random_words();
     size = Word.length();
     Word_complete = fill_Word_complete();
     random_letters = fill_random_letters();
     WordfillGameOver = false;
+    load();
     display = "";
 }
 
@@ -78,54 +88,70 @@ void WordfillGame :: set_correctString(int i)
     }
 }
 
-void WordfillGame :: draw(sf::RenderWindow &gameWindow)
-{
-    vector<Sprite> *Test = new vector<Sprite>(3);
+
+void WordfillGame :: load(){
+    Display = new vector<Sprite>(3);
+    ImageT = new vector<Image>(3);
+
+    wrong_ones = new vector<Sprite>(2);
+    Images = new vector<Image>(2);
+
     Image image;
 
-        for(int i = 0; i < 3; i++){
-        image.LoadFromFile("resource/img/Wordfill/"  + schange(Word_complete->at(i)) + ".png");
+    for(int i = 0; i < 3; i++){
+          image.LoadFromFile("resource/img/Wordfill/"  + schange(Word_complete->at(i)) + ".png");
+           ImageT->at(i) = image;
 
         Sprite s;
-        s.SetImage(image);
+        s.SetImage(ImageT->at(i));
         s.SetPosition(X(i),50);
         s.Resize(200,200);
 
-        Test->at(i) = s;
+        Display->at(i) = s;
 
-        gameWindow.Draw(Test -> at(i));
-        }
+    }
 
-        Sprite t;
-        image.LoadFromFile("resource/img/Wordfill/"+ Word + ".jpg");
-        t.SetImage(image);
-        t.SetPosition(700,10);
-        t.Resize(300,250);
-        gameWindow.Draw(t);
-
-         sf :: String Text;
-        string findword = " Complete the word for this picture \n      by clicking on the letters below";
-
-        Text.SetText(findword);
-        Text.SetSize(60);
-        Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(40,250);
-        gameWindow.Draw(Text);
-
-        for(int i = 0; i < 2; i++){
-        image.LoadFromFile("resource/img/Wordfill/"  + schange(random_letters->at(i)) + ".png");
+    for(int i = 0; i < 2; i++){
+      image.LoadFromFile("resource/img/Wordfill/"  + schange(random_letters->at(i)) + ".png");
+      Images -> at(i) = image;
 
         Sprite s;
-        s.SetImage(image);
+        s.SetImage(Images->at(i));
         s.SetPosition(X(i) + 300,400);
         s.Resize(200,200);
 
-        Test->at(i) = s;
+        wrong_ones->at(i) = s;
+    }
 
-        gameWindow.Draw(Test -> at(i));
+        picture.LoadFromFile("resource/img/Wordfill/"+ Word + ".jpg");
+        pic.SetImage(picture);
+        pic.SetPosition(700,10);
+        pic.Resize(300,250);
+}
+
+
+void WordfillGame :: draw(sf::RenderWindow &gameWindow)
+{
+     for(int i = 0; i < 3; i++){
+          gameWindow.Draw( Display -> at(i));
+        }
+
+        gameWindow.Draw(pic);
+
+         sf :: String Text;
+        string findword = "Complete the word for this \n                picture";
+
+        Text.SetText(findword);
+        Text.SetSize(70);
+        Text.SetColor(sf::Color :: Red);
+        Text.SetPosition(60,250);
+        gameWindow.Draw(Text);
+
+        for(int i = 0; i < 2; i++){
+        gameWindow.Draw(wrong_ones -> at(i));
+        }
 
         drawText(gameWindow);
-        }
 }
 
 void WordfillGame :: drawText(sf::RenderWindow &gameWindow)
@@ -237,7 +263,7 @@ vector<char> * WordfillGame :: fill_random_letters()
     vector <char> * complete = new vector <char>;
     complete->push_back(out);
     complete->push_back(other);
- 
+
     int num = rand() % 2;
     int num1 = rand() % 2;
     char t = complete->at(num);
