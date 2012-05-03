@@ -22,6 +22,11 @@ class MatchingGame
                 vector <int> * Number;
                 string display;
 
+                vector<Sprite> * Test;
+                vector<Image> *  Images;
+                Sprite s;
+                Image t;
+
                 int random_number();
                 void fill();
                 void swap();
@@ -30,6 +35,8 @@ class MatchingGame
 
                 bool MatchingGameOver;
                 void set_correctString(int);
+                void load();
+
 };
 
 MatchingGame :: MatchingGame()
@@ -43,6 +50,7 @@ MatchingGame :: MatchingGame()
         fill();
         swap();
         swap();
+        load();
 }
 
 void MatchingGame :: correct(int x, int y)
@@ -76,36 +84,46 @@ void MatchingGame :: set_correctString(int i)
 
 void MatchingGame :: draw(sf::RenderWindow &gameWindow)
 {
-    vector<Sprite> * Test = new vector<Sprite>(4);
 
-  Image image;
         for(int i = 0; i < 4; i++){
-            image.LoadFromFile("resource/img/matching/Words/" +get_char_number(Number->at(i))+ ".jpg" );
-        Sprite s;
-        s.SetImage(image);
-        s.SetPosition(X(i),370);
-        s.Resize(220,220);
-        Test->at(i) = s;
         gameWindow.Draw(Test -> at(i));
         }
 
-        image.LoadFromFile("resource/img/matching/Numbers/" + get_char_number(Number_to_Find) + ".jpg");
-        Sprite s;
-        s.SetImage(image);
-        s.SetPosition(400,10);
-        s.Resize(200,200);
         gameWindow.Draw(s);
 
-         sf :: String Text;
-        string findword = "      Click on the word that matches \n                       the number";
+        sf :: String Text;
+        string findword = "Match the number with the word";
          Text.SetText(findword);
         Text.SetSize(60);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(10,220);
+        Text.SetPosition(30,220);
         gameWindow.Draw(Text);
 
         drawText(gameWindow);
 
+}
+
+void MatchingGame :: load(){
+     Test = new vector<Sprite>(4);
+      Images = new vector<Image> (4);
+
+       Image image;
+    for(int i = 0; i < 4; i++){
+        image.LoadFromFile("resource/img/matching/Words/" +get_char_number(Number->at(i))+ ".jpg" );
+        Images->at(i) = image;
+
+        Sprite s;
+        s.SetImage(Images->at(i));
+        s.SetPosition(X(i),370);
+        s.Resize(220,220);
+        Test->at(i) = s;
+
+        }
+
+        t.LoadFromFile("resource/img/matching/Numbers/" + get_char_number(Number_to_Find) + ".jpg");
+        s.SetImage(t);
+        s.SetPosition(400,10);
+        s.Resize(200,200);
 }
 
 void MatchingGame :: drawText(sf::RenderWindow &gameWindow)
