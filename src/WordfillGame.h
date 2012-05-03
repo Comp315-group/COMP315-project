@@ -26,8 +26,12 @@ class WordfillGame
                 char out;
                 char other;
 
-                vector<Sprite> * Test;
-                Image image;
+                vector<Sprite> * Display;
+                vector<Image> * ImageT;
+                vector<Sprite> * wrong_ones;
+                vector<Image> * Images;
+                Sprite pic;
+                Image picture;
 
                 string random_words();
                 vector<char> * fill_Word_complete();
@@ -37,7 +41,8 @@ class WordfillGame
                 bool WordfillGameOver;
                 void set_correctString(int);
                 int X(int i);
-                 string schange(char);
+                string schange(char);
+                void load();
 
 
 
@@ -45,12 +50,13 @@ class WordfillGame
 
 WordfillGame::WordfillGame()
 {
-    Test = new vector<Sprite>(3);
+
     Word = random_words();
     size = Word.length();
     Word_complete = fill_Word_complete();
     random_letters = fill_random_letters();
     WordfillGameOver = false;
+    load();
     display = "";
 }
 
@@ -82,30 +88,57 @@ void WordfillGame :: set_correctString(int i)
     }
 }
 
-void WordfillGame :: draw(sf::RenderWindow &gameWindow)
-{
-    
-        for(int i = 0; i < 3; i++){
-        image.LoadFromFile("resource/img/Wordfill/"  + schange(Word_complete->at(i)) + ".png");
+
+void WordfillGame :: load(){
+    Display = new vector<Sprite>(3);
+    ImageT = new vector<Image>(3);
+
+    wrong_ones = new vector<Sprite>(2);
+    Images = new vector<Image>(2);
+
+    Image image;
+
+    for(int i = 0; i < 3; i++){
+          image.LoadFromFile("resource/img/Wordfill/"  + schange(Word_complete->at(i)) + ".png");
+           ImageT->at(i) = image;
 
         Sprite s;
-        s.SetImage(image);
+        s.SetImage(ImageT->at(i));
         s.SetPosition(X(i),50);
         s.Resize(200,200);
 
-        Test->at(i) = s;
+        Display->at(i) = s;
 
-        gameWindow.Draw(Test -> at(i));
+    }
+
+    for(int i = 0; i < 2; i++){
+      image.LoadFromFile("resource/img/Wordfill/"  + schange(random_letters->at(i)) + ".png");
+      Images -> at(i) = image;
+
+        Sprite s;
+        s.SetImage(Images->at(i));
+        s.SetPosition(X(i) + 300,400);
+        s.Resize(200,200);
+
+        wrong_ones->at(i) = s;
+    }
+
+        picture.LoadFromFile("resource/img/Wordfill/"+ Word + ".jpg");
+        pic.SetImage(picture);
+        pic.SetPosition(700,10);
+        pic.Resize(300,250);
+}
+
+
+void WordfillGame :: draw(sf::RenderWindow &gameWindow)
+{
+     for(int i = 0; i < 3; i++){
+          gameWindow.Draw( Display -> at(i));
         }
 
-        Sprite t;
-        image.LoadFromFile("resource/img/Wordfill/"+ Word + ".jpg");
-        t.SetImage(image);
-        t.SetPosition(700,10);
-        t.Resize(300,250);
-        gameWindow.Draw(t);
+        gameWindow.Draw(pic);
 
-        sf :: String Text;
+         sf :: String Text;
         string findword = "Complete the word for this \n                picture";
 
         Text.SetText(findword);
@@ -115,19 +148,10 @@ void WordfillGame :: draw(sf::RenderWindow &gameWindow)
         gameWindow.Draw(Text);
 
         for(int i = 0; i < 2; i++){
-        image.LoadFromFile("resource/img/Wordfill/"  + schange(random_letters->at(i)) + ".png");
-
-        Sprite s;
-        s.SetImage(image);
-        s.SetPosition(X(i) + 300,400);
-        s.Resize(200,200);
-
-        Test->at(i) = s;
-
-        gameWindow.Draw(Test -> at(i));
+        gameWindow.Draw(wrong_ones -> at(i));
+        }
 
         drawText(gameWindow);
-        }
 }
 
 void WordfillGame :: drawText(sf::RenderWindow &gameWindow)
