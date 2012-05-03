@@ -28,6 +28,11 @@ class PatternGame
                 string name;
                 string display;
 
+                vector<Sprite> * SpriteDisplay;
+                vector<Image> *  ImagesD;
+                vector<Sprite> * SpritePattern;
+                vector<Image> *  ImagesP;
+
                 //just sets the strings
                 vector<string> * set_display(int);
                 vector<string> * set_Pattern();
@@ -39,6 +44,7 @@ class PatternGame
                 int Xpos(int);
 
                 void set_correctString(int);
+                void load();
 };
 
 PatternGame :: PatternGame()
@@ -51,7 +57,49 @@ PatternGame :: PatternGame()
 
         swapdisplay();
         swappattern();
+        load();
 }
+
+
+void PatternGame :: load()
+{
+
+       SpritePattern = new vector<Sprite>(9);
+        ImagesP = new vector<Image> (9);
+
+        SpriteDisplay = new vector<Sprite>(3);
+        ImagesD = new vector<Image> (3);
+
+       Image image;
+    for(int i = 0; i < 9; i++){
+        image.LoadFromFile("resource/img/pattern/"  + pattern ->at(i) + ".jpg");
+        ImagesP->at(i) = image;
+
+        Sprite s;
+        s.SetImage(ImagesP->at(i));
+        s.SetPosition(X(i),40);
+        s.Resize(100,150);
+
+        SpritePattern->at(i) = s;
+
+        }
+
+
+    for(int i = 0; i < 3; i++){
+         image.LoadFromFile("resource/img/pattern/"  + displaypattern->at(i) + ".jpg");
+        ImagesD->at(i) = image;
+
+        Sprite s;
+        s.SetImage(ImagesD->at(i));
+        s.SetPosition(Xpos(i),400);
+        s.Resize(200,200);
+
+        SpriteDisplay->at(i) = s;
+    }
+
+}
+
+
 
 void PatternGame :: draw(sf::RenderWindow &gameWindow)
 {
@@ -59,41 +107,25 @@ void PatternGame :: draw(sf::RenderWindow &gameWindow)
         vector<Sprite> * SpriteDisplay = new vector<Sprite>(3);
         vector<Sprite> * SpritePattern =  new vector<Sprite>(9);
 
-     Image image;
-
         for(int i = 0; i < 9; i++){
-        image.LoadFromFile("resource/img/pattern/"  + pattern ->at(i) + ".jpg");
-
-        Sprite s;
-        s.SetImage(image);
-        s.SetPosition(X(i),40);
-        s.Resize(100,150);
-
-        SpritePattern->at(i) = s;
+       
         gameWindow.Draw(SpritePattern -> at(i));
         }
 
        for(int i = 0; i < 3; i++){
-        image.LoadFromFile("resource/img/pattern/"  + displaypattern->at(i) + ".jpg");
-
-        Sprite s;
-        s.SetImage(image);
-        s.SetPosition(Xpos(i),400);
-        s.Resize(200,200);
-
-        SpriteDisplay->at(i) = s;
-        gameWindow.Draw(SpriteDisplay -> at(i));
+          gameWindow.Draw(SpriteDisplay -> at(i));
 
         }
 
         sf :: String Text;
-        string findword = " Click on the picture below \n   that finishes the pattern ";
+        string findword = " Finish the pattern ";
 
         Text.SetText(findword);
-        Text.SetSize(80);
+        Text.SetSize(100);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(50,210);
+        Text.SetPosition(100,210);
         gameWindow.Draw(Text);
+
 
         drawText(gameWindow);
 }
