@@ -26,9 +26,6 @@ class WordfillGame
                 char out;
                 char other;
 
-                vector<Sprite> * Test;
-                Image image;
-
                 string random_words();
                 vector<char> * fill_Word_complete();
                 vector<char> * fill_random_letters();
@@ -45,7 +42,6 @@ class WordfillGame
 
 WordfillGame::WordfillGame()
 {
-    Test = new vector<Sprite>(3);
     Word = random_words();
     size = Word.length();
     Word_complete = fill_Word_complete();
@@ -84,7 +80,9 @@ void WordfillGame :: set_correctString(int i)
 
 void WordfillGame :: draw(sf::RenderWindow &gameWindow)
 {
-    
+    vector<Sprite> *Test = new vector<Sprite>(3);
+    Image image;
+
         for(int i = 0; i < 3; i++){
         image.LoadFromFile("resource/img/Wordfill/"  + schange(Word_complete->at(i)) + ".png");
 
@@ -105,13 +103,13 @@ void WordfillGame :: draw(sf::RenderWindow &gameWindow)
         t.Resize(300,250);
         gameWindow.Draw(t);
 
-        sf :: String Text;
-        string findword = "Complete the word for this \n                picture";
+         sf :: String Text;
+        string findword = " Complete the word for this picture \n      by clicking on the letters below";
 
         Text.SetText(findword);
-        Text.SetSize(70);
+        Text.SetSize(60);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(60,250);
+        Text.SetPosition(40,250);
         gameWindow.Draw(Text);
 
         for(int i = 0; i < 2; i++){

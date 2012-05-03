@@ -58,11 +58,11 @@ void Game::Start(void)
 
     //initialise all game instance classes. Each class is responsible for its own logic
 	oddonegame = new OddOneGame();
-	mazegame = new MazeGame();
-	mazegame->setPlayerStartLocation(player1);
 	hidegame = new HideGame();
 	matchinggame = new MatchingGame();
 	wordfilgame = new WordfillGame();
+    mazegame = NULL;
+	pickupgame = NULL;
 
 	//seed RNG
 	srand(time(0));
@@ -213,6 +213,94 @@ void Game::GameLoop()
                                 //mazegame object is set to NULL so that it can be re-initialised if we need to create another
                                 //mazegame object
                                 mazegame = NULL;
+                                break;
+                        }
+					}
+				break;
+			}
+
+            //playing pickup game
+			case Game::Playing_pickup:
+			{
+			    //the event handler for this game
+				sf::Event currentEvent;
+
+				//on the second occurence of a maze game, the mazegame object will have been set to null
+				//it is reinitialised here
+                if (pickupgame == NULL)
+                {
+                    pickupgame = new PickupGame();
+                    //reset player position
+                    pickupgame->setPlayerStartLocation(player1);
+                }
+
+                //poll main window for event
+           		while(_mainWindow.GetEvent(currentEvent))
+					{
+					    //clear screen and draw background followed by the maze followed by the player
+                        _mainWindow.Clear(sf::Color(0,0,0));
+                        _mainWindow.Draw(bgSprite);
+                        pickupgame->draw(_mainWindow);
+                        _mainWindow.Draw(player1->getSprite());
+
+                        //Update and draw player score to screen
+                        score_text.SetText("Score : " + toString(player1->getScore()));
+                        _mainWindow.Draw(score_text);
+                        _mainWindow.Draw(cursor);
+
+                        //update the main window
+                        _mainWindow.Display();
+
+                        //mouse was moved, move custom cursor
+                        if (currentEvent.Type == sf::Event::MouseMoved)
+                        {
+                            int x = currentEvent.MouseMove.X;
+                            int y = currentEvent.MouseMove.Y;
+
+                            cursor.SetPosition(x, y);
+                        }
+
+                        //close button was clicked
+                        if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
+
+                        //key was pressed
+                        if(currentEvent.Type == sf::Event::KeyPressed)
+                        {
+
+                                //escape key pressed
+                                if(currentEvent.Key.Code == sf::Key::Escape)
+                                {
+                                    //save game state in case player resumes
+                                    tempGameState = _gameState;
+                                    //set game state to paused
+                                    _gameState = Paused;
+                                    //show menu
+                                    ShowMenu();
+                                }
+
+                                //pass pressed key parameter to the mazegame class
+                                else
+                                {
+                                    pickupgame->handle_input(player1, currentEvent);
+                                }
+                        }
+
+                        //player finished the pickupgame
+                        if (pickupgame->pickUpGameOver())
+                        {
+                                //play appropriate sound
+                                sound_manager.playCorrectSound();
+                                score_text.SetColor(sf::Color::Green);
+
+                                //award points to player
+                                player1->incrementScore(20);
+
+                                //move to next game
+                                randomizeGameState(_gameState);
+
+                                //pickup object is set to NULL so that it can be re-initialised if we need to create another
+                                //pickupgame object
+                                pickupgame = NULL;
                                 break;
                         }
 					}
@@ -841,7 +929,7 @@ void Game::ShowMenu()
 */
 void Game::randomizeGameState(Game::GameState currentState)
 {
-    int random = rand() % 8;
+    int random = rand() % 9;
 
     int cur = 0;
     switch(currentState)
@@ -876,11 +964,15 @@ void Game::randomizeGameState(Game::GameState currentState)
 
         case Playing_wordsearch:
             cur = 7;
+            break;
+        case Playing_pickup:
+            cur = 8;
+            break;
     }
 
     //ensures that the same game can never be played twice in a row
     while (random == cur)
-        random = rand() % 8;
+        random = rand() % 9;
 
     switch (random)
     {
@@ -907,6 +999,8 @@ void Game::randomizeGameState(Game::GameState currentState)
         break;
         case 7:
         _gameState = Playing_wordsearch;
+        case 8:
+        _gameState = Playing_pickup;
         break;
 
     }

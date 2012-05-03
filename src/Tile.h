@@ -1,8 +1,6 @@
 #ifndef TILE_H
 #define TILE_H
 
-#endif // TILE_H
-
 #include <SFML/Graphics.HPP>
 #include "GFX.h"
 #include <string>
@@ -57,7 +55,13 @@ public:
     //virtual function needed for Walkable tile objects here. This is to accomodate downcasting
     virtual int getWalkability() const{ return 0; }
 
-protected:
+    //virtual function needed for Number tile objects here. This is to accomodate downcasting
+    virtual int getNumber() const {return 0;}
+
+    //virtual function needed for Number tile objects here. This is to accomodate downcasting
+    virtual void _removeNumberImage() { };
+
+    protected:
     //the image object associated with this tile
     sf::Image image;
     //the sprite object associated with this tile
@@ -77,4 +81,4 @@ protected:
     bool empty;
 };
 
-
+#endif // TILE_H

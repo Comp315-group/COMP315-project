@@ -58,54 +58,113 @@ Map::Map(const char *fileName, mapType type)
 
     switch(type)
     {
-        case Maze_map:
-            //we are creating a maze map
+    case Maze_map:
+    {
+        //we are creating a maze map
 
-            //load images needed for maze objects
-            sf::Image floorTileImg = load_image("resource/img/floor.bmp");
-            sf::Image emptyImg = load_image("resource/img/empty.bmp");
-            sf::Image wallTileImg = load_image("resource/img/wall_stone.png");
-            sf::Image doorImg = load_image("resource/img/wooden_door_open.png");
+        //load images needed for maze objects
+        sf::Image floorTileImg = load_image("resource/img/maze/floor.bmp");
+        sf::Image emptyImg = load_image("resource/img/maze/empty.bmp");
+        sf::Image wallTileImg = load_image("resource/img/maze/wall_stone.png");
+        sf::Image doorImg = load_image("resource/img/maze/wooden_door_open.png");
 
-            //build tileset from the map representation. This is a one-to-one mapping
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++)
+        //build tileset from the map representation. This is a one-to-one mapping
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+            {
+                switch (mapRepresentation[x][y])
                 {
-                    switch (mapRepresentation[x][y])
-                    {
-                        //empty tile
-                        case '0':
-                            tileset[x][y] = new WalkableTile(emptyImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
-                            tileset[x][y]->setEmpty(true);
-                        break;
+                    //empty tile
+                case '0':
+                    tileset[x][y] = new WalkableTile(emptyImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
+                    tileset[x][y]->setEmpty(true);
+                    break;
 
-                        //wall tile
-                        case '#':
-                            tileset[x][y] = new WalkableTile(wallTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
-                        break;
+                    //wall tile
+                case '#':
+                    tileset[x][y] = new WalkableTile(wallTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
+                    break;
 
-                        //floor tile
-                        case '.':
-                            tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
-                        break;
+                    //floor tile
+                case '.':
+                    tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
+                    break;
 
-                        //exit tile
-                        case 'e':
-                            tileset[x][y] = new WalkableTile(doorImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_EXITABLE);
-                        break;
+                    //exit tile
+                case 'e':
+                    tileset[x][y] = new WalkableTile(doorImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_EXITABLE);
+                    break;
 
-                        //start tile
-                        case 's':
-                            tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
-                            startTile = tileset[x][y];
-                            break;
+                    //start tile
+                case 's':
+                    tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
+                    startTile = tileset[x][y];
+                    break;
 
-                    }
                 }
-            break;
+            }
+        break;
+    }
+
+    case Pickup_map:
+    {
+        //we are creating a pickup map
+
+        //load images needed for pickup objects
+        sf::Image floorTileImg = load_image("resource/img/pickup/floor.bmp");
+        sf::Image emptyImg = load_image("resource/img/pickup/empty.bmp");
+        sf::Image wallTileImg = load_image("resource/img/pickup/wall_stone.png");
+
+        //build tileset from the map representation. This is a one-to-one mapping
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+            {
+                switch (mapRepresentation[x][y])
+                {
+                    //empty tile
+                case '0':
+                    tileset[x][y] = new WalkableTile(emptyImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
+                    tileset[x][y]->setEmpty(true);
+                    break;
+
+                    //wall tile
+                case '#':
+                    tileset[x][y] = new WalkableTile(wallTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_NOT_OK);
+                    break;
+
+                    //floor tile
+                case '.':
+                    tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
+                    break;
+
+                    //numbertile
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                {
+
+                    sf::Image tileIMG = load_image("resource/img/pickup/" + toString(mapRepresentation[x][y]) + ".bmp");
+                    tileset[x][y] = new NumberTile(tileIMG, floorTileImg, x*NUMBER_TILE_DEFAULT_WIDTH, y*NUMBER_TILE_DEFAULT_HEIGHT, mapRepresentation[x][y] - '0');
+                    break;
+                }
+
+                //start tile
+                case 's':
+                {
+                    tileset[x][y] = new WalkableTile(floorTileImg, x*WALKABLE_TILE_DEFAULT_WIDTH, y*WALKABLE_TILE_DEFAULT_HEIGHT, WALKABILITY_OK);
+                    startTile = tileset[x][y];
+                    break;
+
+                }
+                }
+            }
+        break;
     }
     //close file input stream
     inStream.close();
+    }
 }
 
 /*

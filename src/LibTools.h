@@ -4,8 +4,6 @@
 #include <string>
 #include <sstream>
 
-#endif // LIBTOOLS_H
-
 using namespace std;
 
 //Converts type T to string
@@ -26,3 +24,5 @@ template<class T>
      stream >> t;
      return t;
 }
+
+#endif // LIBTOOLS_H

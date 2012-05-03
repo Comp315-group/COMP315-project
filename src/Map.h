@@ -1,9 +1,8 @@
 #ifndef MAP_H
 #define MAP_H
 
-#endif // MAP_H
-
 #include "Tile_Walkable.h"
+#include "numberTile.h"
 #include <fstream>
 #include <string>
 #include "LibTools.h"
@@ -24,7 +23,7 @@ class Map{
         Tile* tileset[MAXIMUM_MAP_HEIGHT][MAXIMUM_MAP_WIDTH];
 
         //The type of maps available
-        enum mapType {Maze_map, WordSearch_map, Memory_map};
+        enum mapType {Maze_map, Pickup_map};
 
     //Default constructor
     Map();
@@ -54,4 +53,4 @@ class Map{
         //The tile that the player starts on for this map
         Tile *startTile;
 };
-
+#endif // MAP_H

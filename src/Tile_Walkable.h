@@ -31,12 +31,8 @@ class WalkableTile : public Tile
         walkability = _walkability;
         }
 
-        //returns the walkability of this tile
+        //returns the number of this tile
         int getWalkability() const {return walkability;}
-
-        //set the walkability of this tile
-        void setWalkability(int newWalkability);
 };
 
-
-#endif // TILE_WALKABLE_H_INCLUDED
+#endif

@@ -18,6 +18,7 @@
 #include "WordSearchGame.h"
 #include "MemoryGame.h"
 #include "PlayerMenu.h"
+#include "PickupGame.h"
 
 ////////////////////////
 ////PLAYER OBJECTS//////
@@ -36,6 +37,7 @@ PatternGame *patterngame;
 WordfillGame *wordfilgame;
 WordSearchGame *wordsearchgame;
 MemoryGame *memorygame;
+PickupGame *pickupgame;
 
 //Used to display player score
 sf::String score_text;
@@ -68,7 +70,7 @@ private:
 
     enum GameState { Uninitialized, ShowingSplash, Paused,
 					ShowingMenu, Creating_Player, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Playing_wordfill, Playing_memory,
-					Playing_wordsearch, Game_over, Exiting };
+					Playing_wordsearch, Playing_pickup, Game_over, Exiting };
 
     static void randomizeGameState(GameState currentState);
 

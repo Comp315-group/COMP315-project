@@ -20,7 +20,6 @@ class MemoryGame{
 
     private:
         vector <string> * generateGrid(int value);
-        void randomize();
         int X(int i);
         int Y(int i);
 
@@ -50,7 +49,6 @@ MemoryGame::MemoryGame(){
     revealB = -1;
     hiddenTiles = 16;
     grid = generateGrid((rand()% 3)+1);
-    randomize();
 
     SpriteImages = new vector<Sprite> (16);
     SpriteBacks = new vector<Sprite> (16);
@@ -455,16 +453,3 @@ vector<string>* MemoryGame::generateGrid(int value){
             return NULL;
     }
 }
-
-void MemoryGame::randomize(){
-    for(int i=0;i<50;i++){
-        string temp;
-        int a = rand()%16;
-        int b = rand()%16;
-
-        temp = grid->at(a);
-        grid->at(a) = grid->at(b);
-        grid->at(b) = temp;
-    }
-}
-
