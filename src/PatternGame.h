@@ -104,9 +104,6 @@ void PatternGame :: load()
 void PatternGame :: draw(sf::RenderWindow &gameWindow)
 {
 
-        vector<Sprite> * SpriteDisplay = new vector<Sprite>(3);
-        vector<Sprite> * SpritePattern =  new vector<Sprite>(9);
-
         for(int i = 0; i < 9; i++){
        
         gameWindow.Draw(SpritePattern -> at(i));

@@ -999,6 +999,7 @@ void Game::randomizeGameState(Game::GameState currentState)
         break;
         case 7:
         _gameState = Playing_wordsearch;
+        break;
         case 8:
         _gameState = Playing_pickup;
         break;
