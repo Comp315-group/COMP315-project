@@ -41,6 +41,7 @@ class PickupGame
 
 PickupGame::PickupGame()
 {
+
     //Which number needs to be picked up next
     curNum = 1;
 
@@ -51,7 +52,9 @@ PickupGame::PickupGame()
     srand(time(0));
 
     //choose random maze
-    int num = 3;//rand() % 4;
+    int num = rand() % 4;
+
+
     switch (num)
     {
         case 0:

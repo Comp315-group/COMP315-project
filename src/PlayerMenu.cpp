@@ -93,7 +93,7 @@ PlayerMenu::PlayerMenu()
 {
     finished = false;
     choseAvatar = false;
-    name = "PLAYER";
+    name = "";
     nameText.SetPosition(482, 515);
     nameText.SetColor(sf::Color::Cyan);
     nameText.SetText(name);

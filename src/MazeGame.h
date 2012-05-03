@@ -50,6 +50,7 @@ MazeGame::MazeGame()
 
     //choose random maze
     int num = rand() % 4;
+
     switch (num)
     {
         case 0:

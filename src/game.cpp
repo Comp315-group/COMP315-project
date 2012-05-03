@@ -293,7 +293,7 @@ void Game::GameLoop()
                                 score_text.SetColor(sf::Color::Green);
 
                                 //award points to player
-                                player1->incrementScore(20);
+                                player1->incrementScore(50);
 
                                 //move to next game
                                 randomizeGameState(_gameState);
@@ -447,7 +447,7 @@ void Game::GameLoop()
                            {
                                sound_manager.playCorrectSound();
                                score_text.SetColor(sf::Color::Green);
-                               player1->incrementScore(20);
+                               player1->incrementScore(10);
                                randomizeGameState(_gameState);
                                hidegame = NULL;
                                break;
@@ -520,7 +520,7 @@ void Game::GameLoop()
                             {
                                sound_manager.playCorrectSound();
                                score_text.SetColor(sf::Color::Green);
-                               player1->incrementScore(20);
+                               player1->incrementScore(40);
                                randomizeGameState(_gameState);
                                matchinggame = NULL;
                                break;
@@ -590,7 +590,7 @@ void Game::GameLoop()
                            {
                                sound_manager.playCorrectSound();
                                score_text.SetColor(sf::Color::Green);
-                               player1->incrementScore(20);
+                               player1->incrementScore(10);
                                randomizeGameState(_gameState);
                                patterngame = NULL;
                                break;
@@ -661,7 +661,7 @@ void Game::GameLoop()
                             {
                                 sound_manager.playCorrectSound();
                                 score_text.SetColor(sf::Color::Green);
-                                player1->incrementScore(20);
+                                player1->incrementScore(10);
                                 randomizeGameState(_gameState);   //move to next game
                                 wordfilgame = NULL;
                                 break;
@@ -729,7 +729,7 @@ void Game::GameLoop()
                         {
                             sound_manager.playCorrectSound();
                             score_text.SetColor(sf::Color::Green);
-                            player1->incrementScore(10);
+                            player1->incrementScore(15);
                             randomizeGameState(_gameState);
 
                             wordsearchgame = NULL;
@@ -858,7 +858,7 @@ void Game::GameLoop()
     }
 
     //Win condition has been met
-	if (player1->getScore() >= 200)
+	if (player1->getScore() >= 400)
 	{
             //stop main music
             sound_manager.stopBGMusic();
@@ -1015,6 +1015,8 @@ void Game::ShowPlayerCreationScreen()
         //get result
         PlayerMenu::MenuResult result = plMenu.Show(_mainWindow);
         sf::Image tempImg;
+
+
         switch(result)
         {
             case PlayerMenu::exit:
