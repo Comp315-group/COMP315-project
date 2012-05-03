@@ -25,13 +25,17 @@ private:
      string word;
      string display;
 
-    void swap();
-    vector<string> * setstring(int num);
+     vector<Sprite> * SpriteImages;
+     vector<Image> * Images;
 
-   bool OddOneGameOver;
+     void swap();
+     vector<string> * setstring(int num);
 
-   int X(int);
-   void set_correctString(int);
+     bool OddOneGameOver;
+
+     int X(int);
+     void set_correctString(int);
+     void load();
 
 };
 
@@ -57,38 +61,51 @@ OddOneGame::OddOneGame()
     OddOneGameOver = false;
      oddoneout = setstring(1 + (rand() % 16));
      swap();
-
+     load();
+     
      display = "";
 
 }
 
 void OddOneGame::draw(sf::RenderWindow &gameWindow)
 {
-   vector<Sprite> * SpriteImages = new vector<Sprite> (4);
-        Image image;
-        for(int i = 0; i < 4; i++){
-        image.LoadFromFile("resource/img/odd/" + oddoneout->at(i) + ".jpg");
-        Sprite s;
-        s.SetImage(image);
-        s.SetPosition(X(i),250);
-        s.Resize(235,250);
-        SpriteImages->at(i) = s;
-        gameWindow.Draw(SpriteImages -> at(i));
+       for(int i = 0; i < 4; i++){
+              gameWindow.Draw(SpriteImages -> at(i));
         }
 
-         sf :: String Text;
-        string findword = " Click on the Odd One Out ";
+        sf :: String Text;
+        string findword = " Find the Odd One Out ";
 
         Text.SetText(findword);
         Text.SetSize(85);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(10,50);
+        Text.SetPosition(50,50);
         gameWindow.Draw(Text);
 
         drawText(gameWindow);
 
 
 }
+
+
+void OddOneGame :: load(){
+  SpriteImages = new vector<Sprite> (4);
+  Images = new vector<Image>(4);
+
+    Image image;
+    for(int i = 0; i < 4; i++){
+        image.LoadFromFile("resource/img/odd/" + oddoneout->at(i) + ".jpg");
+        Images ->at(i) = image;
+
+        Sprite s;
+        s.SetImage(Images ->at(i));
+        s.SetPosition(X(i),250);
+        s.Resize(235,250);
+        SpriteImages->at(i) = s;
+        }
+
+}
+
 
 void OddOneGame::drawText(sf::RenderWindow &gameWindow)
 {
