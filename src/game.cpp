@@ -1003,7 +1003,6 @@ void Game::randomizeGameState(Game::GameState currentState)
         case 8:
         _gameState = Playing_pickup;
         break;
-
     }
 }
 
