@@ -949,7 +949,7 @@ void Game::ShowPlayMenu()
             //solo was clicked
             case PlayMenu::Solo:
                 playMenu.setMAction(true);
-                randomizeGameState(Playing_pickup);
+                _gameState = Creating_Player;
                 break;
             //multi was clicked
             case PlayMenu::Multi:
