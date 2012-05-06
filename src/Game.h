@@ -54,6 +54,9 @@ sf::Sprite cursor;
 //sound manager for the game
 SoundManager sound_manager;
 
+//game is starting up
+bool first_run = true;
+
 class Game
 {
 public:
@@ -65,11 +68,12 @@ private:
 
 	static void ShowSplashScreen();
 	static void ShowMenu();
+	static void ShowPlayMenu();
 	static void ShowPlayerCreationScreen();
 
 
     enum GameState { Uninitialized, ShowingSplash, Paused,
-					ShowingMenu, Creating_Player, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Playing_wordfill, Playing_memory,
+					ShowingMenu, ShowingPlayMenu, Creating_Player, Playing_odd, Playing_pattern, Playing_hide,Playing_matching, Playing_maze, Playing_wordfill, Playing_memory,
 					Playing_wordsearch, Playing_pickup, Game_over, Exiting };
 
     static void randomizeGameState(GameState currentState);

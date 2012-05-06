@@ -10,7 +10,9 @@
 
 #include "Game.h"
 #include "MainMenu.h"
+#include "PlayMenu.h"
 #include "SplashScreen.h"
+#include <iostream> //TODO: remove this
 
 // A quirk of C++, static member variables need to be instantiated outside of the class
 Game::GameState Game::_gameState = Uninitialized;
@@ -114,6 +116,12 @@ void Game::GameLoop()
 		case Game::ShowingMenu:
         {
             ShowMenu();
+            break;
+        }
+
+        case Game::ShowingPlayMenu:
+        {
+            ShowPlayMenu();
             break;
         }
 
@@ -888,8 +896,12 @@ void Game::ShowMenu()
     //create main menu
 	MainMenu mainMenu;
 
-    //start playing background music
-    sound_manager.playBGMusic();
+    if (first_run)
+    {
+        //start playing background music if the menu is shown for the first time
+        sound_manager.playBGMusic();
+        first_run = false;
+    }
 
 	//get result
 	while (!mainMenu.tookMeaningfulAction())
@@ -910,14 +922,51 @@ void Game::ShowMenu()
             if (_gameState == Paused)
                 _gameState = tempGameState;
 
-            //start game by randomizing the game state
+            //Move to play menu
             else
             {
                 //hack for now to fix a bug
                 score_text.SetX(0);
                 score_text.SetY(0);
-                _gameState = Creating_Player;
+                _gameState = ShowingPlayMenu;
             }
+            break;
+        }
+	}
+}
+
+void Game::ShowPlayMenu()
+{
+    //create main menu
+	PlayMenu playMenu;
+	//get result
+	while (!playMenu.tookMeaningfulAction())
+	{
+        PlayMenu::MenuResult result = playMenu.Show(_mainWindow);
+
+        switch(result)
+        {
+            //solo was clicked
+            case PlayMenu::Solo:
+                playMenu.setMAction(true);
+                randomizeGameState(Playing_pickup);
+                break;
+            //multi was clicked
+            case PlayMenu::Multi:
+                //playMenu.setMAction(true);
+                //TODO: multi
+                break;
+
+            //back to main menu
+            case PlayMenu::Back:
+                playMenu.setMAction(true);
+                _gameState = ShowingMenu;
+                break;
+
+                //exit was clicked
+            case PlayMenu::Exit:
+                playMenu.setMAction(true);
+                _gameState = Game::Exiting;
                 break;
         }
 	}

@@ -4,6 +4,7 @@
 MainMenu::MainMenu()
 {
     //Setup clickable regions
+    mAction = false;
 
 	//Play menu item coordinates
 	MenuItem playButton;
@@ -28,10 +29,10 @@ MainMenu::MainMenu()
 	cursorImage = load_image("resource/img/cursor.png");
 	cursor.SetImage(cursorImage);
 
-    //To start with, cursor is positioned near the center of the window
+    //To start with, cursor is positioned near the top-left corner of the window
     //it updates on the first instance of cursor movement
-    cursor.SetX(500);
-    cursor.SetY(400);
+    cursor.SetX(60);
+    cursor.SetY(45);
 }
 
 MainMenu::MenuResult MainMenu::Show(sf::RenderWindow& window)

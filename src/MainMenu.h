@@ -23,7 +23,7 @@ public:
 
 	MenuResult Show(sf::RenderWindow& window);
 
-private:
+protected:
     //player clicked an appropriate button
     bool mAction;
 	MenuResult GetMenuResponse(sf::RenderWindow& window);
