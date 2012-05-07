@@ -859,6 +859,7 @@ void Game::GameLoop()
                     {
                             //game returns to the menu
 						    _gameState = ShowingMenu;
+						    first_run = true;
                     }
                 }
                 break;
