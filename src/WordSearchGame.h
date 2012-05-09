@@ -13,44 +13,93 @@ using namespace sf;
 class WordSearchGame{
 
     public:
+        //default constructor
         WordSearchGame();
+
+        //draws the memory game grid and its components to a specified window
         void draw(RenderWindow &gameWindow);
+
+        //draws text to a specified window
         void drawText(RenderWindow &gameWindow);
+
+        //returns if the memory game has been solved
         bool gameOver();
+
+
         void correct(int,int);
+
+        //updates the location of where the mouse was clicked on a specified window
         void update(int xpos, int ypos);
 
     private:
+        //generates the columns and rows of the word search grid
         vector < vector <string> * > * generateGrid(int value);
+
+        //returns a x co-ordinate based on its input
         int X(int i);
+
+        //returns a y co-ordinate based on its input
         int Y(int i);
+
+        //records x position of the mouse click
         int xPos;
+
+        //records y position of the mouse click
         int yPos;
+
+        //records if two tiles have the same image
         size_t found;
+
+        //stores the the list of image sprites
         vector<Sprite> * SpriteImages;
 
+        //stores the the list of image Images
         vector<Image> * Images;
 
+        //records if the memory game has been solved
         bool wordsearchGameOver;
 
+        //stores the columns and rows of the word search grid
         vector < vector <string> * > * grid;
+
+        //stores the word that must be found
         string word;
+
+        //stores what letter of the word have been found
         string displayWord;
 };
 
+/*
+    default constructor
+*/
 WordSearchGame::WordSearchGame(){
+    //starts a new game as being unsolved
     wordsearchGameOver = false;
+
+    //randomly generates a new grid
     grid = generateGrid((rand()%7)+1);
+
+    //initializes the vectors associated with the Image and Sprite storage
     SpriteImages = new vector<Sprite> (9);
     Images = new vector<Image> (9);
 
+    //stores the number of tiles added to the grid
     int count = 0;
 
     Image image;
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
+
+                //loads the image from the resource folder
                 image.LoadFromFile("resource/img/WordSearch/" + (grid->at(i))->at(j) + ".png");
+
+                //stores the image in its appropriate vector
                 Images->at(count) = image;
+
+                /*
+                sets the  and y co-ordinates of the image, resizes it
+                and stores it in its appropriate vector
+                */
                 Sprite s;
                 s.SetImage(Images->at(count));
                 s.SetPosition(X(i),Y(j));
@@ -63,6 +112,10 @@ WordSearchGame::WordSearchGame(){
     displayWord = "";
 }
 
+
+/*
+    returns the x co-ordinate of where the mouse was clicked
+*/
 int WordSearchGame::X(int i){
     switch(i){
         case 0:
@@ -78,6 +131,9 @@ int WordSearchGame::X(int i){
     }
 }
 
+/*
+    returns the y co-ordinate of where the mouse was clicked
+*/
 int WordSearchGame::Y(int j){
     switch(j){
         case 0:
@@ -93,8 +149,17 @@ int WordSearchGame::Y(int j){
     }
 }
 
+/*
+    determines the result of a mouse click
+*/
 void WordSearchGame::update(int xpos, int ypos){
 
+    /*
+        Each check determines where the mouse has been clicked. If the mouse click
+        occured within a valid tile range there is a check to determine if the tile
+        clicked contains a letter which forms the next part of the word. If it is
+        then the displayed word is appended with the newly clicked letter.
+    */
     if(xpos>=400&&xpos<=475){
         if(ypos>=300&&ypos<=375){
             found = word.find(displayWord+(grid->at(0))->at(0));
@@ -149,10 +214,14 @@ void WordSearchGame::update(int xpos, int ypos){
         }
     }
 
+    //checks to see if the player has found the word
     if(displayWord.compare(word)==0)
         wordsearchGameOver = true;
 }
 
+/*
+    draws the memory game grid to the specified window
+*/
 void WordSearchGame::draw(sf::RenderWindow &gameWindow)
 {
         int count = 0;
@@ -168,14 +237,17 @@ void WordSearchGame::draw(sf::RenderWindow &gameWindow)
         string findword = " Find the word " + word;
 
         Text.SetText(findword);
-        Text.SetSize(90);
+        Text.SetSize(85);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(100,100);
+        Text.SetPosition(10,50);
         gameWindow.Draw(Text);
 
         drawText(gameWindow);
 }
 
+/*
+    draws text to the specified window
+*/
 void WordSearchGame::drawText(sf::RenderWindow &gameWindow)
 {
     sf::String Text;
@@ -186,10 +258,16 @@ void WordSearchGame::drawText(sf::RenderWindow &gameWindow)
         gameWindow.Draw(Text);
 }
 
+/*
+    returns if the game has been completed
+*/
 bool WordSearchGame::gameOver(){
     return wordsearchGameOver;
 }
 
+/*
+    generates a word search game grid determined on the integer input
+*/
 vector < vector <string> * > * WordSearchGame::generateGrid(int value){
     vector < vector <string> * > * temp = new vector < vector <string> * >;
     vector <string> * colA = new vector <string>;
