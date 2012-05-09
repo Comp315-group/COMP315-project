@@ -10,46 +10,81 @@ class Player{
     private:
         //The name of this player
         string name;
+
         //player score
         int score;
-        //player time
-        float time;
+
         //player x coordinate used in the maze game
         int xPos;
+
         //player y coordinate used in the maze game
         int yPos;
 
         //the player image, used in the mazegame
         sf::Image image;
+
         //the sprite created from the above image
         sf::Sprite sprite;
 
         //the player's portrait
         sf::Image avatar;
+
         //the sprite created from the above image
         sf::Sprite avatar_sprite;
 
     public:
+        //Player constructor using string and image as inputs
         Player(string name_, sf::Image image_);
-        string getName() const;
+
+        //returns the player name
+        string getName();
+
+        //sets the player name to the specified string value
         void setName(string s) { name = s;};
-        int getScore() const;
-        float getTime();
+
+        //returns the player score
+        int getScore();
+
+        //resets the player score to 0
         void resetScore();
-        void resetTime();
+
+        //increases the player score by the specified value
         void incrementScore(int value);
-        void incrementTime(float time);
+
+        //return the player x co-ordinate
         int getXPos();
+
+        //return the player y co-ordinate
         int getYPos();
+
+        //changes the x co-ordinate by the specified value
         void alterX(int x);
+
+        //changes the y co-ordinate by the specified value
         void alterY(int y);
+
+        //changes the x and y co-ordinates to the specified values
         void move(int newX, int newY);
+
+        //returns the player image
         sf::Image getImage();
+
+        //sets the player image to the specified image
         void setImage(sf::Image image_);
-        sf::Sprite getSprite() const;
+
+        //returns the player sprite
+        sf::Sprite getSprite();
+
+        //sets the player sprite to the specified sprite
         void setSprite(sf::Sprite sprite);
+
+        //changes the player avatar to the specified image
         void changeAvatar(sf::Image new_avatar);
+
+        //returns the player avatar
         sf::Sprite getAvatar() const {return avatar_sprite;};
+
+        //deletes the Player object
         ~Player();
 };
 
