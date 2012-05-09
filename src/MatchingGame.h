@@ -39,6 +39,7 @@ class MatchingGame
 
 };
 
+//Constructor for MatchingGame
 MatchingGame :: MatchingGame()
 {
         MatchingGameOver = false;
@@ -53,6 +54,8 @@ MatchingGame :: MatchingGame()
         load();
 }
 
+//gets the coordinates of the of the click 
+//checks it 
 void MatchingGame :: correct(int x, int y)
 {
 
@@ -71,6 +74,7 @@ void MatchingGame :: correct(int x, int y)
 
 }
 
+//checks if the string is correct
 void MatchingGame :: set_correctString(int i)
 {
     if(Number -> at(i) == Number_to_Find){
@@ -82,6 +86,7 @@ void MatchingGame :: set_correctString(int i)
     }
 }
 
+//draws the images to the screen
 void MatchingGame :: draw(sf::RenderWindow &gameWindow)
 {
 
@@ -103,6 +108,7 @@ void MatchingGame :: draw(sf::RenderWindow &gameWindow)
 
 }
 
+//loads the images to the sprite
 void MatchingGame :: load(){
      Test = new vector<Sprite>(4);
       Images = new vector<Image> (4);
@@ -126,6 +132,7 @@ void MatchingGame :: load(){
         s.Resize(200,200);
 }
 
+//draws the images to the screen 
 void MatchingGame :: drawText(sf::RenderWindow &gameWindow)
 {
         sf::String Text;
@@ -136,6 +143,7 @@ void MatchingGame :: drawText(sf::RenderWindow &gameWindow)
         gameWindow.Draw(Text);
 }
 
+//changes the number to a char
 string MatchingGame :: get_char_number(int num)
 {
     char k = num + 48;
@@ -148,11 +156,13 @@ string MatchingGame :: get_char_number(int num)
 
 }
 
+//checks if the game is over 
 bool MatchingGame :: gameOver()
 {
 return MatchingGameOver;
 }
 
+//fills the rest of the string with random numbers
 void MatchingGame :: fill()
 {
 
@@ -176,11 +186,13 @@ void MatchingGame :: fill()
 
 }
 
+//returns random numbers
 int MatchingGame :: random_number()
 {
     return rand() % 11;
 }
 
+//Switches the numbers in the vector
 void MatchingGame :: swap()
 {
     int i = rand() % 4;
@@ -191,6 +203,7 @@ void MatchingGame :: swap()
     Number ->at(j) = temp;
 }
 
+//sets the x coordinates
 int MatchingGame:: X(int i)
 {
  switch(i){
