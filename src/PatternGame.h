@@ -22,8 +22,8 @@ class PatternGame
     private:
                 bool patterngameOver;
 
-                vector<string> * pattern;
-                vector<string> * displaypattern;
+                vector<string> * pattern; //string for the pattern
+                vector<string> * displaypattern; //string for the pattern to fill
                 int num;
                 string name;
                 string display;
@@ -47,6 +47,7 @@ class PatternGame
                 void load();
 };
 
+//Constructor for PatternGame
 PatternGame :: PatternGame()
 {
     patterngameOver = false;
@@ -60,7 +61,7 @@ PatternGame :: PatternGame()
         load();
 }
 
-
+//loads the images to the sprite
 void PatternGame :: load()
 {
 
@@ -100,7 +101,7 @@ void PatternGame :: load()
 }
 
 
-
+//draws the images and the string to the screen
 void PatternGame :: draw(sf::RenderWindow &gameWindow)
 {
 
@@ -127,6 +128,7 @@ void PatternGame :: draw(sf::RenderWindow &gameWindow)
         drawText(gameWindow);
 }
 
+//draws the string to the screen
 void PatternGame :: drawText(sf::RenderWindow &gameWindow)
 {
         sf::String Text;
@@ -137,6 +139,7 @@ void PatternGame :: drawText(sf::RenderWindow &gameWindow)
         gameWindow.Draw(Text);
 }
 
+//gets the coordinates of the click and checks it
 void PatternGame :: correct(int x, int y)
 {
         if((x >= 190 && x <=390) && (y >=400 && y <= 600)){
@@ -150,6 +153,7 @@ void PatternGame :: correct(int x, int y)
     }
 }
 
+//checks if the click is correct
 void PatternGame :: set_correctString(int i)
 {
     if(displaypattern -> at(i) == name){
@@ -161,11 +165,14 @@ void PatternGame :: set_correctString(int i)
     }
 }
 
+//checks if the game is over
 bool PatternGame :: gameOver()
 {
     return patterngameOver;
 }
 
+//if the pattern is 2 it fills the display 
+//with the another picture
 string PatternGame :: oddpicture(int i)
 {
     switch(i){
@@ -186,11 +193,14 @@ string PatternGame :: oddpicture(int i)
     }
 }
 
+//if the number is only 2 then it sets the number to 
+//another number
 void PatternGame :: setnum(int n)
 {
     num = n;
 }
 
+//changes the postion of the wrong one
 void PatternGame :: swappattern()
 {
     int i = rand() % 8;
@@ -198,6 +208,7 @@ void PatternGame :: swappattern()
     pattern -> at(i) = "_";
 }
 
+//changes the pattern in the display vector
  void PatternGame :: swapdisplay()
  {
 
@@ -214,6 +225,7 @@ void PatternGame :: swappattern()
             displaypattern -> at(j) = temp;
  }
 
+//fills the vector with a random set
 vector<string> * PatternGame :: set_display(int i)
 {
          vector<string> * d = new  vector<string>;
@@ -321,6 +333,7 @@ switch(i){
 
 }
 
+//fills the rest of the pattern
 vector<string> * PatternGame :: set_Pattern()
 {
     vector<string> * p = new vector<string>;
@@ -342,6 +355,7 @@ vector<string> * PatternGame :: set_Pattern()
     return p;
 }
 
+//sets the x coordinates of the pattern to draw
 int PatternGame:: X(int i)
 {
 
@@ -370,6 +384,7 @@ int PatternGame:: X(int i)
     }
 }
 
+//sets the x coordinates of the display to draw
 int PatternGame :: Xpos(int i)
 {
     switch(i){
