@@ -8,5 +8,6 @@
 
 class SplashScreen {
  public:
+ //show splash
    void Show(sf::RenderWindow& window);
  };

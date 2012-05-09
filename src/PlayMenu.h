@@ -5,8 +5,6 @@
 
 class PlayMenu : public MainMenu
 {
-
-
     public:
         enum MenuResult { Nothing, Solo, Multi, Back, Exit };
         PlayMenu();

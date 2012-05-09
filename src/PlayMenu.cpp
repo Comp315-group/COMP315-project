@@ -3,6 +3,7 @@
 
 PlayMenu::PlayMenu()
 {
+    //solo play button
     MenuItem soloButton;
 	soloButton.rect.Top= 248;
 	soloButton.rect.Bottom = 475;
@@ -10,6 +11,7 @@ PlayMenu::PlayMenu()
 	soloButton.rect.Right = 940;
 	soloButton.action = Solo;
 
+    //multi play button
 	MenuItem multiButton;
 	multiButton.rect.Left = 85;
 	multiButton.rect.Right = 945;
@@ -17,6 +19,7 @@ PlayMenu::PlayMenu()
 	multiButton.rect.Bottom = 702;
 	multiButton.action = Multi;
 
+    //back button
 	MenuItem backButton;
 	backButton.rect.Left=17;
 	backButton.rect.Right=130;
@@ -40,6 +43,7 @@ PlayMenu::PlayMenu()
     mAction = false;
 }
 
+//show menu
 PlayMenu::MenuResult PlayMenu::Show(sf::RenderWindow& window)
 {
     mAction = false;
@@ -55,6 +59,7 @@ PlayMenu::MenuResult PlayMenu::Show(sf::RenderWindow& window)
 	return GetMenuResponse(window);
 }
 
+//process event
 PlayMenu::MenuResult  PlayMenu::GetMenuResponse(sf::RenderWindow& window)
 {
 	sf::Event menuEvent;
@@ -86,6 +91,7 @@ PlayMenu::MenuResult  PlayMenu::GetMenuResponse(sf::RenderWindow& window)
 	}
 }
 
+//process click
 PlayMenu::MenuResult PlayMenu::HandleClick(int x, int y)
 {
 	std::list<MenuItem>::iterator it;

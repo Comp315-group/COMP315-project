@@ -16,6 +16,7 @@ void SplashScreen::Show(sf::RenderWindow & renderWindow)
 	renderWindow.Display();
 
 	sf::Event event;
+	//any action closes the splash screen
 	while(true)
 	{
 		while(renderWindow.GetEvent(event))

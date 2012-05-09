@@ -867,69 +867,122 @@ void Game::GameLoop()
 //a player has won the game with 400 score
     case Game::Game_over:
     {
-        //this event object is used to allow the player to press a key to leave the end-game screen
-        sf::Event currentEvent;
-        //reset player score
-        player1->resetScore();
-        player1->resetTime();
-
-        sf::Packet winnerPacket;
-
-
-        string name;
-        unsigned short port = 9999;
-        sf::IPAddress address(serverIP);
-
-        if (clientSock.IsValid())
+        if (solo)
         {
-            clientSock.SetBlocking(true);
-            if (clientSock.Receive(winnerPacket, address, port) == sf::Socket::Done)
+            //this event object is used to allow the player to press a key to leave the end-game screen
+            sf::Event currentEvent;
+
+            //reset player score
+            player1->resetScore();
+
+            //poll window for events
+            while(_mainWindow.GetEvent(currentEvent))
             {
-                winnerPacket >> name;
-                clientSock.Close();
-            }
-        }
+                //clear window, draw the game over image
+                _mainWindow.Clear(sf::Color(0, 0, 0));
+                _mainWindow.Draw(gameOverSprite);
+                _mainWindow.Draw(player1->getAvatar());
+                sf::String nameText;
+                nameText.SetX(435);
+                nameText.SetY(275);
+                nameText.SetText(player1->getName());
+                nameText.SetColor(sf::Color::Red);
+                _mainWindow.Draw(nameText);
+                score_text.SetPosition(435, 300);
+                _mainWindow.Draw(score_text);
+                _mainWindow.Draw(cursor);
+                _mainWindow.Display();
 
-        //poll window for events
-        while(_mainWindow.GetEvent(currentEvent))
-        {
-            //clear window, draw the game over image
-            _mainWindow.Clear(sf::Color(0, 0, 0));
-            _mainWindow.Draw(gameOverSprite);
-
-            sf::String nameText(name + " is the winner!");
-            nameText.SetSize(75);
-            nameText.SetPosition(400,400);
-            nameText.SetText(player1->getName());
-            nameText.SetColor(sf::Color::Red);
-            _mainWindow.Draw(nameText);
-            _mainWindow.Draw(cursor);
-            _mainWindow.Display();
-
-            //mouse was moved, move custom cursor
-            if (currentEvent.Type == sf::Event::MouseMoved)
-            {
-                int x = currentEvent.MouseMove.X;
-                int y = currentEvent.MouseMove.Y;
-
-                cursor.SetPosition(x, y);
-            }
-
-            //close button clicked
-            if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
-
-            //key pressed
-            if(currentEvent.Type == sf::Event::KeyPressed)
-            {
-                if(currentEvent.Key.Code == sf::Key::Return)
+                //mouse was moved, move custom cursor
+                if (currentEvent.Type == sf::Event::MouseMoved)
                 {
-                //game returns to the menu
-                _gameState = ShowingMenu;
-                first_run = true;
+                    int x = currentEvent.MouseMove.X;
+                    int y = currentEvent.MouseMove.Y;
+
+                    cursor.SetPosition(x, y);
+                }
+
+                //close button clicked
+                if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
+
+                //key pressed
+                if(currentEvent.Type == sf::Event::KeyPressed)
+                {
+                    //game returns to the menu
+                    _gameState = ShowingMenu;
+                    first_run = true;
                 }
             }
+            break;
         }
-        break;
+
+
+        else
+        {
+            //this event object is used to allow the player to press a key to leave the end-game screen
+            sf::Event currentEvent;
+            //reset player score
+            player1->resetScore();
+            player1->resetTime();
+
+            sf::Packet winnerPacket;
+
+
+            string name;
+            unsigned short port = 9999;
+            sf::IPAddress address(serverIP);
+
+            if (clientSock.IsValid())
+            {
+                clientSock.SetBlocking(true);
+                if (clientSock.Receive(winnerPacket, address, port) == sf::Socket::Done)
+                {
+                    winnerPacket >> name;
+                    clientSock.Close();
+                }
+            }
+
+            //poll window for events
+            while(_mainWindow.GetEvent(currentEvent))
+            {
+                //clear window, draw the game over image
+                _mainWindow.Clear(sf::Color(0, 0, 0));
+                _mainWindow.Draw(gameOverSprite);
+
+                sf::String nameText(name + " is the winner!");
+                nameText.SetSize(75);
+                nameText.SetPosition(400,400);
+                nameText.SetText(player1->getName());
+                nameText.SetColor(sf::Color::Red);
+                _mainWindow.Draw(nameText);
+                _mainWindow.Draw(cursor);
+                _mainWindow.Display();
+
+                //mouse was moved, move custom cursor
+                if (currentEvent.Type == sf::Event::MouseMoved)
+                {
+                    int x = currentEvent.MouseMove.X;
+                    int y = currentEvent.MouseMove.Y;
+
+                    cursor.SetPosition(x, y);
+                }
+
+                //close button clicked
+                if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
+
+                //key pressed
+                if(currentEvent.Type == sf::Event::KeyPressed)
+                {
+                    if(currentEvent.Key.Code == sf::Key::Return)
+                    {
+                        //game returns to the menu
+                        _gameState = ShowingMenu;
+                        first_run = true;
+                    }
+                }
+            }
+            break;
+        }
     }
     }
     //Win condition has been met (singlePlayer)
@@ -949,38 +1002,38 @@ void Game::GameLoop()
 
     else
         //Win condition has been met(multiPlayer
-    if (clientSock.IsValid())
-    {
-        sf::Packet ggPacket;
-        unsigned short port = 9999;
-        sf::IPAddress server(serverIP);
-        if (clientSock.Receive(ggPacket, server , port) == sf::Socket::Done)
+        if (clientSock.IsValid())
         {
-            string gg;
-            ggPacket >> gg;
-
-            if (gg == "GG")
+            sf::Packet ggPacket;
+            unsigned short port = 9999;
+            sf::IPAddress server(serverIP);
+            if (clientSock.Receive(ggPacket, server , port) == sf::Socket::Done)
             {
-                cout << "Recieved gg from server" << endl;
-                //send this player's information to the server for position calculation
-                sf::Packet infoPacket;
-                infoPacket << player1->getName();
-                infoPacket << player1->getScore();
+                string gg;
+                ggPacket >> gg;
 
-                if (clientSock.Send(infoPacket, server , port) == sf::Socket::Done)
+                if (gg == "GG")
                 {
-                cout << "Sent info packet to server" << endl;
-                //stop main music
-                sound_manager.stopBGMusic();
-                //play appropriate game over sound
-                sound_manager.playGameOverSound();
+                    cout << "Recieved gg from server" << endl;
+                    //send this player's information to the server for position calculation
+                    sf::Packet infoPacket;
+                    infoPacket << player1->getName();
+                    infoPacket << player1->getScore();
 
-                //set game state to indicate that the game is over
-                _gameState = Game_over;
+                    if (clientSock.Send(infoPacket, server , port) == sf::Socket::Done)
+                    {
+                        cout << "Sent info packet to server" << endl;
+                        //stop main music
+                        sound_manager.stopBGMusic();
+                        //play appropriate game over sound
+                        sound_manager.playGameOverSound();
+
+                        //set game state to indicate that the game is over
+                        _gameState = Game_over;
+                    }
                 }
             }
         }
-    }
 }
 
 /*
@@ -1182,7 +1235,7 @@ void Game::ShowPlayerCreationScreen()
 
         switch(result)
         {
-        //player clicked exit
+            //player clicked exit
         case PlayerMenu::exit:
             plMenu.setFinished(true);
             _gameState = Exiting;
@@ -1299,7 +1352,8 @@ void Game::ScanForServer()
         sf::IPAddress address(serverIP);
         string status = "Idle";
 
-    do{
+        do
+        {
 
             if (clientSock.Receive(statusPacket, address , port) == sf::Socket::Done)
             {
@@ -1310,7 +1364,8 @@ void Game::ScanForServer()
                     randomizeGameState(_gameState);
                 }
             }
-    } while (status == serverIP);
+        }
+        while (status == serverIP);
         clientSock.SetBlocking(false);
     }
 }
