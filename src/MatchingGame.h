@@ -96,7 +96,7 @@ void MatchingGame :: draw(sf::RenderWindow &gameWindow)
          Text.SetText(findword);
         Text.SetSize(60);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(30,220);
+        Text.SetPosition(100,220);
         gameWindow.Draw(Text);
 
         drawText(gameWindow);

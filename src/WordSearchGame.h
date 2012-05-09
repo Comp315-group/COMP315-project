@@ -168,9 +168,9 @@ void WordSearchGame::draw(sf::RenderWindow &gameWindow)
         string findword = " Find the word " + word;
 
         Text.SetText(findword);
-        Text.SetSize(85);
+        Text.SetSize(90);
         Text.SetColor(sf::Color :: Red);
-        Text.SetPosition(10,50);
+        Text.SetPosition(100,100);
         gameWindow.Draw(Text);
 
         drawText(gameWindow);

@@ -19,8 +19,16 @@ int Player::getScore(){
     return score;
 }
 
+float Player::getTime(){
+    return time;
+}
+
 void Player::resetScore(){
     score = 0;
+}
+
+void Player::resetTime(){
+    time = 0;
 }
 
 void Player::incrementScore(int value){
@@ -28,6 +36,13 @@ void Player::incrementScore(int value){
 
     if (score < 0)
         resetScore();
+}
+
+void Player::incrementTime(float value){
+    time+=value;
+
+    if (time < 0)
+        resetTime();
 }
 
 int Player::getXPos(){

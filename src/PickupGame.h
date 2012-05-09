@@ -79,10 +79,10 @@ PickupGame::PickupGame()
     }
 
     //initialise pickup text
-    pickupText.SetText("Pick up all the numbers \n\tin the correct order!");
-    pickupText.SetSize(80);
-    pickupText.SetColor(sf::Color ::Blue);
-    pickupText.SetPosition(175,25);
+    pickupText.SetText("Using the arrows pick up all the \n numbers in the correct order!");
+    pickupText.SetSize(60);
+    pickupText.SetColor(sf::Color ::Red);
+    pickupText.SetPosition(125,25);
 }
 
 //handles logic for a pickup attempt

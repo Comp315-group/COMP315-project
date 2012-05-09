@@ -12,6 +12,8 @@ class Player{
         string name;
         //player score
         int score;
+        //player time
+        float time;
         //player x coordinate used in the maze game
         int xPos;
         //player y coordinate used in the maze game
@@ -32,8 +34,11 @@ class Player{
         string getName();
         void setName(string s) { name = s;};
         int getScore();
+        float getTime();
         void resetScore();
+        void resetTime();
         void incrementScore(int value);
+        void incrementTime(float time);
         int getXPos();
         int getYPos();
         void alterX(int x);

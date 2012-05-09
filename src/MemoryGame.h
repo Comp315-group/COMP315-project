@@ -363,12 +363,12 @@ void MemoryGame::draw(sf::RenderWindow &gameWindow)
     }
 
     sf :: String Text;
-    string header = " Uncover all the tiles ";
+    string header = " Match the tiles ";
 
     Text.SetText(header);
-    Text.SetSize(85);
+    Text.SetSize(100);
     Text.SetColor(sf::Color :: Red);
-    Text.SetPosition(10,50);
+    Text.SetPosition(150,100);
     gameWindow.Draw(Text);
 }
 

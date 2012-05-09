@@ -12,6 +12,7 @@
 #include "MainMenu.h"
 #include "PlayMenu.h"
 #include "SplashScreen.h"
+#include <time.h>
 #include <iostream> //TODO: remove this
 
 // A quirk of C++, static member variables need to be instantiated outside of the class
@@ -58,7 +59,7 @@ void Game::Start(void)
     gameOverSprite.SetX(0);
     gameOverSprite.SetY(0);
 
-    //initialise all game instance classes. Each class is responsible for its own logic
+     //initialise all game instance classes. Each class is responsible for its own logic
 	oddonegame = new OddOneGame();
 	hidegame = new HideGame();
 	matchinggame = new MatchingGame();
@@ -74,7 +75,7 @@ void Game::Start(void)
 
     //initialise the text that notifies the player about their score
     score_text.SetText("Score : " + toString(player1->getScore()));
-    score_text.SetSize(30);
+    score_text.SetSize(20);
     score_text.SetColor(sf::Color ::Green);
     score_text.SetPosition(0,0);
 
@@ -119,6 +120,7 @@ void Game::GameLoop()
             break;
         }
 
+//shows the meun for playing the game
         case Game::ShowingPlayMenu:
         {
             ShowPlayMenu();
@@ -144,8 +146,7 @@ void Game::GameLoop()
 			{
 			    //the event handler for this game
 				sf::Event currentEvent;
-
-				//on the second occurence of a maze game, the mazegame object will have been set to null
+            //on the second occurence of a maze game, the mazegame object will have been set to null
 				//it is reinitialised here
                 if (mazegame == NULL)
                 {
@@ -214,6 +215,7 @@ void Game::GameLoop()
 
                                 //award points to player
                                 player1->incrementScore(20);
+                                player1->incrementTime(_timekeeper.getTimeRemaining());
 
                                 //move to next game
                                 randomizeGameState(_gameState);
@@ -232,8 +234,7 @@ void Game::GameLoop()
 			{
 			    //the event handler for this game
 				sf::Event currentEvent;
-
-				//on the second occurence of a maze game, the mazegame object will have been set to null
+           				//on the second occurence of a maze game, the mazegame object will have been set to null
 				//it is reinitialised here
                 if (pickupgame == NULL)
                 {
@@ -302,7 +303,7 @@ void Game::GameLoop()
 
                                 //award points to player
                                 player1->incrementScore(50);
-
+                                player1->incrementTime(_timekeeper.getTimeRemaining());
                                 //move to next game
                                 randomizeGameState(_gameState);
 
@@ -315,6 +316,7 @@ void Game::GameLoop()
 				break;
 			}
 
+    //odd one out  game is currently being played
 			case Game::Playing_odd:
 			{
 			    //the event handler for this game
@@ -376,13 +378,13 @@ void Game::GameLoop()
                         if((posx >= 10 && posx <= 1000) && (posy >= 250 && posy <= 500)){
                             oddonegame->correct(posx, posy);
                             oddonegame->drawText(_mainWindow);
-                           // _mainWindow.Draw(cursor);
 
                             if(oddonegame->gameOver())
                             {
                                 sound_manager.playCorrectSound();
                                 score_text.SetColor(sf::Color::Green);
                                 player1->incrementScore(10);
+                                player1->incrementTime(_timekeeper.getTimeRemaining());
                                 randomizeGameState(_gameState);   //move to next game
                                 oddonegame = NULL;
                                 break;
@@ -401,14 +403,18 @@ void Game::GameLoop()
 					 break;
 			}
 
+    //Hide game is currently being played
 			case Game::Playing_hide:
 			{
-
+ //the event handler for this game
             sf::Event currentEvent;
 
-            if (hidegame == NULL)
+  //on the second occurence of an Hide game, the Hide object will have been set to null
+    //it is reinitialised here
+       if (hidegame == NULL)
                 hidegame = new HideGame();
 
+     //poll main window for event
             while(_mainWindow.GetEvent(currentEvent))
 					{
 					_mainWindow.Clear(sf::Color(0,0,0));
@@ -429,9 +435,9 @@ void Game::GameLoop()
                             cursor.SetPosition(x, y);
                     }
 
-
+ //close button was clicked
 					if(currentEvent.Type == sf::Event::Closed) _gameState = Game::Exiting;
-
+//escape key pressed
 					if(currentEvent.Type == sf::Event::KeyPressed)
 						{
 							if(currentEvent.Key.Code == sf::Key::Escape)
@@ -441,6 +447,7 @@ void Game::GameLoop()
                                  ShowMenu();
                                 }
 						}
+						//left mouse button was clicked
 
                     if(currentEvent.Type == currentEvent.MouseButtonPressed && currentEvent.MouseButton.Button == sf:: Mouse::Left){
                           int posx = currentEvent.MouseButton.X;
@@ -456,6 +463,7 @@ void Game::GameLoop()
                                sound_manager.playCorrectSound();
                                score_text.SetColor(sf::Color::Green);
                                player1->incrementScore(10);
+                               player1->incrementTime(_timekeeper.getTimeRemaining());
                                randomizeGameState(_gameState);
                                hidegame = NULL;
                                break;
@@ -480,7 +488,7 @@ void Game::GameLoop()
 			{
 
             sf::Event currentEvent;
-            if (matchinggame == NULL)
+           if (matchinggame == NULL)
                 matchinggame = new MatchingGame();
 
            while(_mainWindow.GetEvent(currentEvent))
@@ -529,6 +537,7 @@ void Game::GameLoop()
                                sound_manager.playCorrectSound();
                                score_text.SetColor(sf::Color::Green);
                                player1->incrementScore(40);
+                               player1->incrementTime(_timekeeper.getTimeRemaining());
                                randomizeGameState(_gameState);
                                matchinggame = NULL;
                                break;
@@ -551,7 +560,7 @@ void Game::GameLoop()
             case Game::Playing_pattern:
 			{
             sf::Event currentEvent;
-            if (patterngame == NULL)
+          if (patterngame == NULL)
                 patterngame = new PatternGame();
 
            while(_mainWindow.GetEvent(currentEvent))
@@ -599,6 +608,7 @@ void Game::GameLoop()
                                sound_manager.playCorrectSound();
                                score_text.SetColor(sf::Color::Green);
                                player1->incrementScore(10);
+                               player1->incrementTime(_timekeeper.getTimeRemaining());
                                randomizeGameState(_gameState);
                                patterngame = NULL;
                                break;
@@ -620,7 +630,7 @@ void Game::GameLoop()
 
         case Game::Playing_wordfill:{
           sf::Event currentEvent;
-			   if (wordfilgame == NULL)
+        if (wordfilgame == NULL)
                     wordfilgame = new WordfillGame();
 
            while(_mainWindow.GetEvent(currentEvent))
@@ -670,6 +680,7 @@ void Game::GameLoop()
                                 sound_manager.playCorrectSound();
                                 score_text.SetColor(sf::Color::Green);
                                 player1->incrementScore(10);
+                                player1->incrementTime(_timekeeper.getTimeRemaining());
                                 randomizeGameState(_gameState);   //move to next game
                                 wordfilgame = NULL;
                                 break;
@@ -680,7 +691,7 @@ void Game::GameLoop()
                             sound_manager.playIncorrectSound();
                             score_text.SetColor(sf::Color::Red);
                             player1->incrementScore(-5);
-                            _mainWindow.Display();
+                              _mainWindow.Display();
                             }
                         }
                     }
@@ -691,7 +702,7 @@ void Game::GameLoop()
     case Game::Playing_wordsearch:
             {
             sf::Event currentEvent;
-            if (wordsearchgame == NULL)
+        if (wordsearchgame == NULL)
                 wordsearchgame = new WordSearchGame();
             while(_mainWindow.GetEvent(currentEvent))
             {
@@ -738,6 +749,7 @@ void Game::GameLoop()
                             sound_manager.playCorrectSound();
                             score_text.SetColor(sf::Color::Green);
                             player1->incrementScore(15);
+                            player1->incrementTime(_timekeeper.getTimeRemaining());
                             randomizeGameState(_gameState);
 
                             wordsearchgame = NULL;
@@ -754,7 +766,7 @@ void Game::GameLoop()
             case Game::Playing_memory:
             {
             sf::Event currentEvent;
-            if (memorygame == NULL)
+           if (memorygame == NULL)
                 memorygame = new MemoryGame();
 
             while(_mainWindow.GetEvent(currentEvent))
@@ -802,6 +814,7 @@ void Game::GameLoop()
                             sound_manager.playCorrectSound();
                             score_text.SetColor(sf::Color::Green);
                             player1->incrementScore(50);
+                            player1->incrementTime(_timekeeper.getTimeRemaining());
                             randomizeGameState(_gameState);
 
                             memorygame = NULL;
@@ -814,33 +827,38 @@ void Game::GameLoop()
             break;
             }
 
-
-            //a player has won the game
-            case Game::Game_over:
-            {
+//a player has won the game with 400 score
+case Game::Game_over:
+        {
                 //this event object is used to allow the player to press a key to leave the end-game screen
                 sf::Event currentEvent;
-
-                //reset player score
+               //reset player score
                 player1->resetScore();
+                player1->resetTime();
 
                 //poll window for events
                 while(_mainWindow.GetEvent(currentEvent))
                 {
                     //clear window, draw the game over image
                     _mainWindow.Clear(sf::Color(0, 0, 0));
-                    _mainWindow.Draw(gameOverSprite);
-                    _mainWindow.Draw(player1->getAvatar());
+                     _mainWindow.Draw(gameOverSprite);
+                     Sprite t = player1->getAvatar();
+                     t.Resize(200,200);
+                     _mainWindow.Draw(t);
+
                     sf::String nameText;
-                    nameText.SetX(435);
-                    nameText.SetY(275);
+                    nameText.SetSize(75);
+                    nameText.SetPosition(400,400);
                     nameText.SetText(player1->getName());
                     nameText.SetColor(sf::Color::Red);
                     _mainWindow.Draw(nameText);
-                    score_text.SetPosition(435, 300);
+
+                    score_text.SetPosition(400, 500);
+                    score_text.SetSize(75);
                     _mainWindow.Draw(score_text);
                     _mainWindow.Draw(cursor);
                     _mainWindow.Display();
+                    score_text.SetSize(20);
 
                      //mouse was moved, move custom cursor
                         if (currentEvent.Type == sf::Event::MouseMoved)
@@ -867,7 +885,7 @@ void Game::GameLoop()
     }
 
     //Win condition has been met
-	if (player1->getScore() >= 400)
+	if (player1->getScore() >= 400 || player1->getTime() >= 900.f)
 	{
             //stop main music
             sound_manager.stopBGMusic();
@@ -877,6 +895,8 @@ void Game::GameLoop()
             //set game state to indicate that the game is over
             _gameState = Game_over;
 	}
+
+
 }
 
 /*
@@ -1085,6 +1105,7 @@ void Game::ShowPlayerCreationScreen()
                 plMenu.setFinished(true);
                 //start mini-games
                 randomizeGameState(_gameState);
+                _timekeeper.start();
 
             case PlayerMenu::keyboard:
                 plMenu.updateName(plMenu.getClickedItem().letter);
@@ -1140,6 +1161,7 @@ void Game::ShowPlayerCreationScreen()
         }
     }
 }
+
 
 int main()
 {

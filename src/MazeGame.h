@@ -75,10 +75,10 @@ MazeGame::MazeGame()
     }
 
     //initialise maze text
-    mazeText.SetText("Escape the maze!");
-    mazeText.SetSize(80);
-    mazeText.SetColor(sf::Color ::Blue);
-    mazeText.SetPosition(175,25);
+    mazeText.SetText("Using the arrow keys\n   escape the maze!");
+    mazeText.SetSize(60);
+    mazeText.SetColor(sf::Color ::Red);
+    mazeText.SetPosition(250,50);
 }
 
 /*
