@@ -8,8 +8,8 @@
 
 class GameTimer{
 
-    sf::Clock timer;
-    float _time;
+    sf::Clock timer;//it is a clock timer 
+    float _time;//keepps the time
 
 public:
 
@@ -17,12 +17,14 @@ public:
     float getTimeRemaining();
 };
 
+//Makes the clock zero
 void GameTimer::start()
 
 {
     timer.Reset();
 }
 
+//gets the time that lasped from starting time
 float GameTimer::getTimeRemaining()
 
 {
