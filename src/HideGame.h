@@ -34,6 +34,7 @@ class HideGame
                 int Y(int);
 };
 
+//consturctor for the HideGame()
 HideGame :: HideGame()
 {
     names = fill_names(rand() % 5);
@@ -47,6 +48,7 @@ HideGame :: HideGame()
 
 }
 
+//Draws the string and images to the screen 
 void HideGame :: draw(sf::RenderWindow &gameWindow)
 {
 
@@ -80,6 +82,7 @@ void HideGame :: draw(sf::RenderWindow &gameWindow)
 
 }
 
+//Draws the test to the screen
 void HideGame::DrawText(sf::RenderWindow &gameWindow)
 {
     sf::String Text;
@@ -90,6 +93,7 @@ void HideGame::DrawText(sf::RenderWindow &gameWindow)
         gameWindow.Draw(Text);
 }
 
+//sets the postion of the x coordinates
 int HideGame :: X(int i)
 {
  switch(i){
@@ -108,6 +112,7 @@ int HideGame :: X(int i)
     }
 }
 
+//sets the postion for y coordinates
 int HideGame :: Y(int i)
 {
  switch(i){
@@ -122,6 +127,7 @@ int HideGame :: Y(int i)
     }
 }
 
+//once the vector is fill it changes the strings around 
 void HideGame :: swap_fill()
 {
 int i = rand() % 15;
@@ -132,6 +138,7 @@ hide_seek->at(i) = hide_seek->at(j);
 hide_seek->at(j) = temp;
 }
 
+//once the vector is fill it changes the strings around 
 void HideGame:: swap()
 {
 int i = rand() % 5;
@@ -143,6 +150,7 @@ names->at(j) = temp;
 
 }
 
+//Fills the vector with a random string
 vector<string> * HideGame:: fill_names(int num)
 {
 
@@ -183,6 +191,7 @@ case 4:
 return complete;
 }
 
+//Completes the grid with the strings
 vector<string> * HideGame:: fill()
 {
 
@@ -206,6 +215,8 @@ vector<string> * HideGame:: fill()
     return complete;
 }
 
+//gets the coordinates of the click and check it against the 
+//vector<String>
 void HideGame :: correct(int x, int y)
 {
 
@@ -257,11 +268,13 @@ void HideGame :: correct(int x, int y)
 
 }
 
+//Checks if the  game is over
 bool HideGame::gameOver()
 {
     return hideGameOver;
 }
 
+//checks if the point clicked matches the one to find
 void HideGame :: set_correctString(int i)
 {
     if(hide_seek -> at(i) == to_find){
