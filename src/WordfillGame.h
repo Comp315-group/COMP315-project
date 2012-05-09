@@ -48,6 +48,7 @@ class WordfillGame
 
 };
 
+//Constuctor for the WordfillGame
 WordfillGame::WordfillGame()
 {
 
@@ -60,11 +61,13 @@ WordfillGame::WordfillGame()
     display = "";
 }
 
+//checks if the game is over
 bool WordfillGame :: gameOver()
 {
 return WordfillGameOver;
 }
 
+//gets the click and checks if it is correct
 void WordfillGame :: correct(int x, int y)
 {
 
@@ -77,6 +80,7 @@ void WordfillGame :: correct(int x, int y)
 
 }
 
+//checks if the click was correct
 void WordfillGame :: set_correctString(int i)
 {
     if(random_letters -> at(i) == out){
@@ -88,7 +92,7 @@ void WordfillGame :: set_correctString(int i)
     }
 }
 
-
+//loads the images to the screen 
 void WordfillGame :: load(){
     Display = new vector<Sprite>(3);
     ImageT = new vector<Image>(3);
@@ -129,7 +133,7 @@ void WordfillGame :: load(){
         pic.Resize(300,250);
 }
 
-
+//draws the images to the screen
 void WordfillGame :: draw(sf::RenderWindow &gameWindow)
 {
      for(int i = 0; i < 3; i++){
@@ -154,6 +158,7 @@ void WordfillGame :: draw(sf::RenderWindow &gameWindow)
         drawText(gameWindow);
 }
 
+//draws the text to the screen
 void WordfillGame :: drawText(sf::RenderWindow &gameWindow)
 {
         sf :: String Text;
@@ -163,6 +168,8 @@ void WordfillGame :: drawText(sf::RenderWindow &gameWindow)
         Text.SetPosition(200,600);
         gameWindow.Draw(Text);
 }
+
+//sets the x coordinates of the images
 int WordfillGame :: X(int i)
 {
  switch(i){
@@ -178,6 +185,7 @@ int WordfillGame :: X(int i)
     }
 }
 
+//changes the char to a string
 string WordfillGame :: schange(char letter)
 {
     string h = "";
@@ -185,6 +193,8 @@ string WordfillGame :: schange(char letter)
     return h;
 }
 
+
+//fills the vector with random words
 string WordfillGame :: random_words()
 {
 int num = rand() % 15;
@@ -242,6 +252,7 @@ switch(num){
 }
 }
 
+//completes the string
 vector<char> * WordfillGame :: fill_Word_complete()
 {
 
@@ -258,6 +269,7 @@ complete->at(num) = '0';
 return complete;
 }
 
+//fills the random letter string
 vector<char> * WordfillGame :: fill_random_letters()
 {
     vector <char> * complete = new vector <char>;

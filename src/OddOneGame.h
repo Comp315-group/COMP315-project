@@ -39,6 +39,7 @@ private:
 
 };
 
+//gets the Coordinates of the click and sends it to the matching method    
 void OddOneGame :: correct(int x, int y)
 {
     if((x >= 10 && x <=250) && (y >=250 && y <= 500)){
@@ -56,6 +57,7 @@ void OddOneGame :: correct(int x, int y)
 
 }
 
+//Constructor of Odd_One_Out 
 OddOneGame::OddOneGame()
 {
     OddOneGameOver = false;
@@ -67,6 +69,7 @@ OddOneGame::OddOneGame()
 
 }
 
+//Draws the images and strings to the screen 
 void OddOneGame::draw(sf::RenderWindow &gameWindow)
 {
        for(int i = 0; i < 4; i++){
@@ -87,7 +90,7 @@ void OddOneGame::draw(sf::RenderWindow &gameWindow)
 
 }
 
-
+//this gets the images to be loaded to the screen
 void OddOneGame :: load(){
   SpriteImages = new vector<Sprite> (4);
   Images = new vector<Image>(4);
@@ -106,7 +109,7 @@ void OddOneGame :: load(){
 
 }
 
-
+//draws the text to the screen
 void OddOneGame::drawText(sf::RenderWindow &gameWindow)
 {
     sf::String Text;
@@ -117,6 +120,7 @@ void OddOneGame::drawText(sf::RenderWindow &gameWindow)
         gameWindow.Draw(Text);
 }
 
+//gets the x postion to draw to the screen
 int OddOneGame :: X(int i)
 {
  switch(i){
@@ -133,11 +137,13 @@ int OddOneGame :: X(int i)
     }
 }
 
+//checks if the game is over
 bool OddOneGame::gameOver()
 {
     return OddOneGameOver;
 }
 
+//switches the images about in the vector
 void OddOneGame:: swap()
 {
         int num = rand()%4;
@@ -146,6 +152,7 @@ void OddOneGame:: swap()
         oddoneout->at(num) = temp;
 }
 
+//looks if the area that was clicked is correct or wrong 
 void OddOneGame :: set_correctString(int i)
 {
     if(oddoneout -> at(i) == word){
@@ -157,6 +164,7 @@ void OddOneGame :: set_correctString(int i)
     }
 }
 
+//Sets the vector to diffrent image names
 vector<string> * OddOneGame:: setstring(int num)
 {
     vector<string> * total = new vector<string>;
