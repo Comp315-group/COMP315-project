@@ -7,6 +7,7 @@
 #include "SFML\Window.hpp"
 #include "SFML\Graphics.hpp"
 #include "SFML\Audio.hpp"
+#include "SFML\Network.hpp"
 #include "Player.h"
 #include "MazeGame.h"
 #include "OddOneGame.h"
@@ -19,11 +20,21 @@
 #include "MemoryGame.h"
 #include "PlayerMenu.h"
 #include "PickupGame.h"
+#include "GameTimer.h"
 
 ////////////////////////
 ////PLAYER OBJECTS//////
 ////////////////////////
 Player *player1;
+
+int numPlayers = 0;
+
+sf::SocketUDP clientSock;
+sf::IPAddress ip;
+std::string serverIP;
+
+//flag for single player
+bool solo = true;
 
 /////////////////////////
 //GAME INSTANCE CLASSES//
@@ -54,6 +65,8 @@ sf::Sprite cursor;
 //sound manager for the game
 SoundManager sound_manager;
 
+GameTimer _timekeeper;
+
 //game is starting up
 bool first_run = true;
 
@@ -70,6 +83,8 @@ private:
 	static void ShowMenu();
 	static void ShowPlayMenu();
 	static void ShowPlayerCreationScreen();
+
+	static void ScanForServer();
 
 
     enum GameState { Uninitialized, ShowingSplash, Paused,

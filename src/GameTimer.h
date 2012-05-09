@@ -1,5 +1,9 @@
 #ifndef GAMETIMER_H_INCLUDED
 
+/**
+    Keeps track of how long players have been playing for
+*/
+
 #define GAMETIMER_H_INCLUDED
 
 #include "SFML\Window.hpp"
@@ -12,7 +16,7 @@ class GameTimer{
     float _time;
 
 public:
-
+    GameTimer(float time) {_time = time;}
     void start();
     float getTimeRemaining();
 };
@@ -24,9 +28,8 @@ void GameTimer::start()
 }
 
 float GameTimer::getTimeRemaining()
-
 {
-    return (timer.GetElapsedTime());
+    return _time - timer.GetElapsedTime();
 }
 
 #endif // GAMETIMER_H_INCLUDED

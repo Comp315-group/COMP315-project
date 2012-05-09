@@ -11,11 +11,11 @@ Player::Player(string name_, sf::Image image_){
     sprite.SetY(yPos);
 }
 
-string Player::getName(){
+string Player::getName() const{
     return name;
 }
 
-int Player::getScore(){
+int Player::getScore() const{
     return score;
 }
 
@@ -80,7 +80,7 @@ void Player::setImage(sf::Image image_){
     sprite.SetImage(image);
 }
 
-sf::Sprite Player::getSprite(){
+sf::Sprite Player::getSprite() const{
     return sprite;
 }
 

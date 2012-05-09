@@ -31,9 +31,9 @@ class Player{
 
     public:
         Player(string name_, sf::Image image_);
-        string getName();
+        string getName() const;
         void setName(string s) { name = s;};
-        int getScore();
+        int getScore() const;
         float getTime();
         void resetScore();
         void resetTime();
@@ -46,7 +46,7 @@ class Player{
         void move(int newX, int newY);
         sf::Image getImage();
         void setImage(sf::Image image_);
-        sf::Sprite getSprite();
+        sf::Sprite getSprite() const;
         void setSprite(sf::Sprite sprite);
         void changeAvatar(sf::Image new_avatar);
         sf::Sprite getAvatar() const {return avatar_sprite;};
