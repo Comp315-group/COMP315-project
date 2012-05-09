@@ -27,14 +27,14 @@ Player::Player(string name_, sf::Image image_){
 /*
     returns the player name
 */
-string Player::getName(){
+string Player::getName() const{
     return name;
 }
 
 /*
     returns the player score
 */
-int Player::getScore(){
+int Player::getScore() const{
     return score;
 }
 
@@ -116,7 +116,7 @@ void Player::setImage(sf::Image image_){
 /*
     returns the player's sprite
 */
-sf::Sprite Player::getSprite(){
+sf::Sprite Player::getSprite() const{
     return sprite;
 }
 
@@ -127,6 +127,23 @@ void Player::setSprite(sf::Sprite sprite_){
     sprite = sprite_;
 }
 
+//get player time
+float Player::getTime(){
+    return time;
+}
+
+//reset player time
+void Player::resetTime(){
+    time = 0;
+}
+
+//add to player time
+void Player::incrementTime(float value){
+    time+=value;
+
+    if (time < 0)
+     resetTime();
+}
 /*
     changes the player's avatar to the specified avatar Image
 */

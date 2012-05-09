@@ -8,6 +8,9 @@ using namespace std;
 
 class Player{
     private:
+        //player time
+        float time;
+
         //The name of this player
         string name;
 
@@ -37,13 +40,22 @@ class Player{
         Player(string name_, sf::Image image_);
 
         //returns the player name
-        string getName();
+        string getName() const;
+
+        //gets the time of this player
+        float getTime();
+
+        //reset player time
+        void resetTime();
+
+        //increase time
+        void incrementTime(float time);
 
         //sets the player name to the specified string value
         void setName(string s) { name = s;};
 
         //returns the player score
-        int getScore();
+        int getScore() const;
 
         //resets the player score to 0
         void resetScore();
@@ -73,7 +85,7 @@ class Player{
         void setImage(sf::Image image_);
 
         //returns the player sprite
-        sf::Sprite getSprite();
+        sf::Sprite getSprite() const;
 
         //sets the player sprite to the specified sprite
         void setSprite(sf::Sprite sprite);
