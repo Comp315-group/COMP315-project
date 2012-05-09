@@ -65,7 +65,7 @@ sf::Sprite cursor;
 //sound manager for the game
 SoundManager sound_manager;
 
-GameTimer _timekeeper;
+GameTimer _timekeeper(300);
 
 //game is starting up
 bool first_run = true;
